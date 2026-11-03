@@ -40,3 +40,9 @@ test("simultaneous downloads are all counted", async () => {
   await Promise.all(Array.from({ length: 25 }, (_, i) => addDownload(s, "a", "10.0.0." + i)));
   assert.equal((await readCounts(s)).a, 25);
 });
+
+test("function rejects apps that aren't in apps.json", async () => {
+  const src = await import("node:fs").then(fs => fs.readFileSync(new URL("../netlify/functions/downloads.mjs", import.meta.url), "utf8"));
+  assert.match(src, /!KNOWN\.has\(app\)/);
+  assert.match(src, /onlyKnown\(await readCounts/);
+});

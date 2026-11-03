@@ -2,6 +2,7 @@
 // POST /api/downloads {"app":"id"}  -> counts one download, returns the new totals
 import { getStore } from "@netlify/blobs";
 import { APP_ID, readCounts, addDownload } from "./counter.mjs";
+import catalog from "../../apps.json" with { type: "json" };
 
 const HEADERS = {
   "Content-Type": "application/json",
@@ -12,29 +13,23 @@ const HEADERS = {
 };
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: HEADERS });
 
-async function knownApps(origin) {
-  try {
-    const r = await fetch(`${origin}/apps.json`, { headers: { "Cache-Control": "no-cache" } });
-    const d = await r.json();
-    return new Set((d.apps || []).map(a => a.id));
-  } catch (e) { return null; }
-}
+// The list of real apps is bundled in at deploy time, so only their downloads are counted or shown.
+const KNOWN = new Set((catalog.apps || []).map(a => a.id));
+const onlyKnown = counts => Object.fromEntries(Object.entries(counts).filter(([k]) => KNOWN.has(k)));
 
 export default async (req, context) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: HEADERS });
   const store = getStore({ name: "downloads", consistency: "strong" });
 
-  if (req.method === "GET") return json(await readCounts(store));
+  if (req.method === "GET") return json(onlyKnown(await readCounts(store)));
 
   if (req.method === "POST") {
     let app = "";
     try { app = String((await req.json()).app || ""); } catch (e) {}
-    if (!APP_ID.test(app)) return json({ error: "unknown app" }, 400);
-    const apps = await knownApps(new URL(req.url).origin);
-    if (apps && !apps.has(app)) return json({ error: "unknown app" }, 400);
+    if (!APP_ID.test(app) || !KNOWN.has(app)) return json({ error: "unknown app" }, 400);
     try {
       const { counted, counts } = await addDownload(store, app, context.ip);
-      return json({ counted, counts });
+      return json({ counted, counts: onlyKnown(counts) });
     } catch (e) {
       return json({ error: "try again" }, 503);
     }

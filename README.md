@@ -1,4 +1,4 @@
-# AppStore
+# AppBucket
 
 My own Android app store website. It lists my apps with screenshots, details, reviews and a direct APK download, and it's hosted on Netlify.
 

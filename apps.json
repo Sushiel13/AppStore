@@ -1,0 +1,239 @@
+{
+  "store": {
+    "name": "Sushil Apps",
+    "tagline": "Simple, private apps for Indian homes",
+    "developer": "Sushil Pattebahadur",
+    "email": "sushiel.p@gmail.com",
+    "city": "Pune"
+  },
+  "categories": [
+    {
+      "id": "home",
+      "name": "House & Home",
+      "emoji": "🏠"
+    },
+    {
+      "id": "productivity",
+      "name": "Productivity",
+      "emoji": "✅"
+    },
+    {
+      "id": "finance",
+      "name": "Finance",
+      "emoji": "₹"
+    },
+    {
+      "id": "health",
+      "name": "Health & Fitness",
+      "emoji": "💚"
+    },
+    {
+      "id": "education",
+      "name": "Education",
+      "emoji": "📚"
+    },
+    {
+      "id": "tools",
+      "name": "Tools",
+      "emoji": "🛠️"
+    }
+  ],
+  "featured": [
+    "house-help-tracker"
+  ],
+  "apps": [
+    {
+      "id": "house-help-tracker",
+      "name": "House Help Tracker",
+      "tagline": "Attendance, salary and UPI pay for your house help, plus expiry reminders.",
+      "category": "home",
+      "tags": [
+        "maid",
+        "cook",
+        "attendance",
+        "salary",
+        "payroll",
+        "expiry",
+        "kitchen",
+        "upi",
+        "whatsapp",
+        "hindi",
+        "marathi"
+      ],
+      "icon": "apps/house-help-tracker/icon.png",
+      "color": "#13235b",
+      "apk": "apps/house-help-tracker/HouseHelpTracker.apk",
+      "version": "1.20",
+      "versionCode": 21,
+      "updated": "2026-11-02",
+      "released": "2026-10-19",
+      "size": "4.6 MB",
+      "minAndroid": "8.0",
+      "price": "Free",
+      "ads": false,
+      "inAppPurchases": false,
+      "contentRating": "Everyone",
+      "downloads": null,
+      "languages": [
+        "English",
+        "हिंदी",
+        "मराठी"
+      ],
+      "permissions": [
+        "Notifications",
+        "Run at start-up (for reminders)",
+        "Fingerprint (optional)",
+        "Camera (to scan packs, optional)",
+        "Microphone (voice input, optional)",
+        "Internet"
+      ],
+      "website": "https://house-help-tracker.netlify.app/",
+      "privacy": "apps/house-help-tracker/privacy.html",
+      "shareText": "House Help Tracker: free app for attendance, salary and UPI pay for your house help, plus expiry reminders.",
+      "screenshots": [
+        {
+          "src": "apps/house-help-tracker/shots/1-home.jpg",
+          "caption": "Home and today's attendance"
+        },
+        {
+          "src": "apps/house-help-tracker/shots/2-attendance.jpg",
+          "caption": "Mark days in one tap"
+        },
+        {
+          "src": "apps/house-help-tracker/shots/3-pay-slip.jpg",
+          "caption": "Pay worked out to the paisa"
+        },
+        {
+          "src": "apps/house-help-tracker/shots/4-whatsapp-pay-slip.jpg",
+          "caption": "Pay slip on WhatsApp"
+        },
+        {
+          "src": "apps/house-help-tracker/shots/5-monthly-report.jpg",
+          "caption": "Monthly report"
+        },
+        {
+          "src": "apps/house-help-tracker/shots/6-expiry.jpg",
+          "caption": "Expiry tracker with photos"
+        },
+        {
+          "src": "apps/house-help-tracker/shots/7-scan-or-speak.jpg",
+          "caption": "Scan or say the name and date"
+        },
+        {
+          "src": "apps/house-help-tracker/shots/8-hindi.jpg",
+          "caption": "Hindi and Marathi too"
+        }
+      ],
+      "about": "House Help Tracker keeps a simple record for the people who help run your home: your cook, maid, car cleaner, driver, or a stand-in who helps for a few days. Every day counts as present unless you mark it otherwise, and pay is worked out for you.",
+      "features": [
+        {
+          "title": "Attendance in one tap",
+          "points": [
+            "Absent, half day, planned leave, weekly off or paid holiday",
+            "Plan leave ahead for festivals and trips home",
+            "A paid holiday for everyone at once"
+          ]
+        },
+        {
+          "title": "Pay worked out for you",
+          "points": [
+            "Monthly, weekly or per-day pay",
+            "Free leaves, bonus, advances in instalments",
+            "Pay by UPI with the amount filled in",
+            "Raises never change months already paid"
+          ]
+        },
+        {
+          "title": "Slips and reports on WhatsApp",
+          "points": [
+            "Detailed pay slip as a message or picture",
+            "Monthly report of everyone's pay and dues",
+            "Leave messages in English, Hindi or Marathi"
+          ]
+        },
+        {
+          "title": "Expiry tracker for the home",
+          "points": [
+            "Add a photo of each product",
+            "Scan or say the name and expiry date",
+            "Reminders 7 days before and on the day",
+            "Share expiring items on WhatsApp"
+          ]
+        },
+        {
+          "title": "Private by design",
+          "points": [
+            "No sign-up, no account, no ads",
+            "All records stay on your phone",
+            "Optional PIN and fingerprint lock",
+            "Backup and restore, light and dark mode"
+          ]
+        }
+      ],
+      "dataSafety": [
+        {
+          "icon": "shield",
+          "title": "Your records stay on your phone",
+          "text": "Names, numbers, pay, attendance and items are never sent to the developer or anyone else."
+        },
+        {
+          "icon": "noads",
+          "title": "No ads, no tracking",
+          "text": "The app has no ads and no analytics of its own."
+        },
+        {
+          "icon": "info",
+          "title": "Google diagnostics for scanning",
+          "text": "Google ML Kit, used to read packs on the phone, may send Google basic diagnostics such as phone model and app performance. Photos are never sent."
+        }
+      ],
+      "changelog": [
+        {
+          "version": "1.20",
+          "date": "2026-11-02",
+          "notes": [
+            "Send feedback and share the app from Settings."
+          ]
+        },
+        {
+          "version": "1.19",
+          "date": "2026-11-02",
+          "notes": [
+            "Add a photo of each product when you add an expiry item.",
+            "A simpler Expiry page: just Add at the top; scanning is inside Add item."
+          ]
+        },
+        {
+          "version": "1.18",
+          "date": "2026-11-02",
+          "notes": [
+            "New name: House Help Tracker. Your records are unchanged."
+          ]
+        },
+        {
+          "version": "1.17",
+          "date": "2026-11-02",
+          "notes": [
+            "Monthly, weekly or per-day pay.",
+            "Temporary help with an exit date."
+          ]
+        },
+        {
+          "version": "1.16",
+          "date": "2026-11-02",
+          "notes": [
+            "Monthly report for all house help, ready to send on WhatsApp."
+          ]
+        },
+        {
+          "version": "1.15",
+          "date": "2026-11-02",
+          "notes": [
+            "Expiry alerts on WhatsApp for up to 3 numbers."
+          ]
+        }
+      ],
+      "reviews": []
+    }
+  ]
+}

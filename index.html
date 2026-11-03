@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sushil Apps</title>
+<meta name="description" content="Sushil Apps: simple, private Android apps for Indian homes. Download House Help Tracker and more, free.">
+<meta name="theme-color" content="#13235b">
+<meta property="og:title" content="Sushil Apps">
+<meta property="og:description" content="Simple, private Android apps for Indian homes. Free downloads.">
+<meta property="og:image" content="store-icon-512.png">
+<link rel="icon" href="store-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="store-icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap">
+<style>
+/* Layout: sticky store bar with search + tabs; views (home, categories, app page, library, search, publish) render into one column up to 1080px */
+:root{
+  --bg:#f4f6fb; --surface:#ffffff; --sunk:#eaeef7; --ink:#101a3a; --muted:#5d6884; --line:#dde3ee;
+  --navy:#13235b; --navy2:#1d3380; --acc:#e8650a; --acc-ink:#ffffff; --link:#2445a8; --star:#f5a400; --ok:#15803d; --warn:#b45309;
+  --f:"Plus Jakarta Sans","Noto Sans Devanagari",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r:18px; color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0a0f1f; --surface:#131a30; --sunk:#1a2341; --ink:#e8ecf8; --muted:#9ba6c3; --line:#26304e; --link:#9db7ff; --acc:#ff8a3d; --acc-ink:#1a0d02; --ok:#4ade80; --warn:#fbbf24; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a0f1f; --surface:#131a30; --sunk:#1a2341; --ink:#e8ecf8; --muted:#9ba6c3; --line:#26304e; --link:#9db7ff; --acc:#ff8a3d; --acc-ink:#1a0d02; --ok:#4ade80; --warn:#fbbf24; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+img{max-width:100%}[hidden]{display:none!important}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--navy)}
+a{color:var(--link)}
+h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.015em}
+button{font:inherit}
+:focus-visible{outline:3px solid #38bdf8;outline-offset:2px}
+.w{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--navy);color:#fff;box-shadow:0 2px 14px rgba(5,10,30,.25)}
+.bar .w{display:flex;align-items:center;gap:14px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:19px;flex:none}
+.logo img{width:34px;height:34px;display:block}
+.search{flex:1;min-width:0;position:relative}
+.search input{width:100%;border:0;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font:inherit;font-size:15px;padding:10px 16px 10px 42px;outline:none}
+.search input::placeholder{color:#b8c5ea}
+.search input:focus{background:#fff;color:#101a3a}
+.search input:focus::placeholder{color:#7a86a6}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#b8c5ea;pointer-events:none}
+.search input:focus+svg{color:#5d6884}
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(5,10,30,.25);overflow:hidden;z-index:5}
+.sugg a{display:flex;gap:12px;align-items:center;padding:10px 14px;color:inherit;text-decoration:none}
+.sugg a:hover,.sugg a[aria-selected="true"]{background:var(--sunk)}
+.sugg img{width:36px;height:36px;border-radius:9px}
+.sugg small{display:block;color:var(--muted);font-size:13px}
+.iconbtn{flex:none;width:40px;height:40px;border-radius:12px;border:0;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;cursor:pointer;text-decoration:none;position:relative}
+.iconbtn:hover{background:rgba(255,255,255,.2)}
+.iconbtn svg{width:20px;height:20px}
+.dot{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:var(--acc);border:2px solid var(--navy)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs a{color:#c9d4f3;text-decoration:none;font-weight:700;font-size:14.5px;padding:10px 14px 12px;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs a[aria-current="page"]{color:#fff;border-color:var(--acc)}
+@media (max-width:620px){.logo span{display:none}.bar .w{gap:10px}}
+
+/* generic */
+main{padding-block:22px 64px;min-height:70vh}
+main:focus{outline:none}
+.sec{margin-top:34px}
+.sec:first-child{margin-top:0}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.sec-h h2{font-size:21px;font-weight:800}
+.sec-h a{font-weight:700;font-size:14px;text-decoration:none}
+.muted{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;border:0;padding:12px 22px;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn svg{width:18px;height:18px}
+.btn.go{background:var(--acc);color:var(--acc-ink);box-shadow:0 6px 18px color-mix(in srgb,var(--acc) 35%,transparent)}
+.btn.go:hover{filter:brightness(1.06)}
+.btn.out{background:transparent;color:var(--link);border:1.5px solid var(--line)}
+.btn.out:hover{background:var(--sunk)}
+.btn.out[aria-pressed="true"]{color:var(--acc);border-color:var(--acc)}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;text-decoration:none}
+.chip:hover{background:var(--sunk)}
+.empty{padding:40px 20px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:18px;margin-bottom:6px}
+.stars-s{color:var(--star);letter-spacing:1px}
+
+/* hero (featured) */
+.hero{position:relative;overflow:hidden;border-radius:24px;color:#fff;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);min-height:300px;text-decoration:none}
+.hero .txt{padding:30px;display:grid;align-content:center;gap:12px;position:relative;z-index:1}
+.hero .k{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#ffd7b8}
+.hero h2{font-size:clamp(26px,4vw,38px);font-weight:800;line-height:1.1}
+.hero p{margin:0;color:#d5def7;max-width:44ch}
+.hero .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.hero .row img{width:56px;height:56px;border-radius:14px;background:#fff}
+.hero .row b{display:block}.hero .row small{color:#c3cff2}
+.hero .peek{position:relative;display:flex;gap:14px;justify-content:center;align-items:flex-end;padding:26px 20px 0}
+.hero .peek img{width:42%;max-width:170px;border-radius:18px 18px 0 0;box-shadow:0 -6px 30px rgba(0,0,0,.35);display:block}
+.hero .peek img:nth-child(2){transform:translateY(-22px)}
+@media (max-width:720px){.hero{grid-template-columns:minmax(0,1fr)}.hero .peek{height:200px;overflow:hidden;align-items:flex-start;padding-top:0}.hero .peek img{width:38%}}
+
+/* app tiles */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}
+.tile{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:14px;text-decoration:none;color:inherit}
+.tile:hover{background:var(--sunk)}
+.tile img{width:68px;height:68px;border-radius:16px;display:block;border:1px solid var(--line)}
+.tile b{display:block;font-size:16px;line-height:1.3}
+.tile .meta{font-size:13.5px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.tile p{margin:4px 0 0;font-size:14px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:12px}
+.cat{display:flex;gap:12px;align-items:center;padding:14px 16px;text-decoration:none;color:inherit;font-weight:700}
+.cat:hover{background:var(--sunk)}
+.cat .e{width:42px;height:42px;border-radius:12px;background:var(--sunk);display:grid;place-items:center;font-size:20px;flex:none;font-weight:800;color:var(--navy2)}
+.cat small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.trust div{padding:16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
+.trust svg{width:24px;height:24px;color:var(--acc)}
+.trust b{display:block}.trust span{font-size:14px;color:var(--muted)}
+
+/* app page */
+.ahead{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:22px;align-items:start}
+.ahead .ic{width:120px;height:120px;border-radius:28px;display:block;box-shadow:0 10px 30px rgba(5,10,30,.18);border:1px solid var(--line)}
+.ahead h1{font-size:clamp(26px,4.2vw,40px);font-weight:800;line-height:1.1}
+.ahead .dev{font-weight:700;margin-top:6px;display:inline-block;text-decoration:none}
+.ahead .tg{color:var(--muted);margin:6px 0 0;max-width:60ch}
+.stats{display:flex;flex-wrap:wrap;margin-top:18px}
+.stat{padding:2px 18px;border-left:1px solid var(--line);text-align:center;min-width:0}
+.stat:first-child{border-left:0;padding-left:0}
+.stat b{display:block;font-size:16px;font-weight:800}
+.stat span{font-size:12.5px;color:var(--muted);font-weight:600}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.qr{padding:14px;display:grid;gap:8px;justify-items:center;text-align:center;width:180px}
+.qr svg{width:140px;height:140px;display:block;background:#fff;border-radius:8px}
+.qr small{color:var(--muted);font-size:12.5px;font-weight:600;line-height:1.35}
+@media (max-width:900px){.qr{display:none}.ahead{grid-template-columns:auto minmax(0,1fr)}}
+@media (max-width:560px){.ahead{grid-template-columns:minmax(0,1fr);gap:14px}.ahead .ic{width:84px;height:84px;border-radius:20px}.acts .go{flex:1}.stat{padding:2px 12px}}
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin}
+.rail button{flex:none;width:min(44vw,190px);border:0;padding:0;background:none;cursor:zoom-in;scroll-snap-align:start;text-align:left;color:inherit}
+.rail img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:16px;border:1px solid var(--line);display:block;background:var(--sunk)}
+.rail small{display:block;font-size:12.5px;color:var(--muted);font-weight:600;margin-top:6px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:34px;align-items:start}
+@media (max-width:900px){.cols{grid-template-columns:minmax(0,1fr)}}
+.prose{max-width:68ch}
+.prose p{margin:0 0 12px}
+.feats{display:grid;gap:18px;margin-top:8px}
+.feats h3{font-size:16px;font-weight:800;margin-bottom:4px}
+.feats ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px;display:grid;gap:2px}
+.clamp{max-height:330px;overflow:hidden;position:relative}
+.clamp::after{content:"";position:absolute;inset:auto 0 0;height:90px;background:linear-gradient(transparent,var(--bg))}
+.more{border:0;background:none;color:var(--link);font-weight:800;padding:6px 0;cursor:pointer}
+.labels{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.labels span{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--muted)}
+.new{padding:16px 18px}
+.new .v{font-size:13px;color:var(--muted);font-weight:700;margin-bottom:6px}
+.new ul{margin:0;padding-left:18px;display:grid;gap:4px}
+details.hist{margin-top:10px}
+details.hist summary{cursor:pointer;font-weight:800;color:var(--link);padding:6px 0}
+.hist ol{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:12px}
+.hist li{border-left:3px solid var(--line);padding-left:14px}
+.hist li b{font-size:14px}.hist li ul{margin:4px 0 0;padding-left:18px;color:var(--muted);font-size:14.5px}
+.safety div{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:14px 18px;border-top:1px solid var(--line)}
+.safety div:first-child{border-top:0}
+.safety svg{width:22px;height:22px;color:var(--link);margin-top:2px}
+.safety b{display:block;font-size:15px}.safety span{font-size:14px;color:var(--muted)}
+.rsum{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;padding:18px}
+.rsum .big{font-size:52px;font-weight:800;line-height:1;text-align:center}
+.rsum .big small{display:block;font-size:13px;color:var(--muted);font-weight:600;margin-top:6px}
+.bars{display:grid;gap:4px}
+.bars div{display:grid;grid-template-columns:12px minmax(0,1fr);gap:8px;align-items:center;font-size:12.5px;color:var(--muted);font-weight:700}
+.bars i{display:block;height:9px;border-radius:9px;background:var(--sunk);overflow:hidden}
+.bars i::before{content:"";display:block;height:100%;width:var(--p);background:var(--star);border-radius:9px}
+.rev{padding:16px 0;border-top:1px solid var(--line)}
+.rev .who{display:flex;gap:10px;align-items:center;font-weight:700}
+.rev .av{width:32px;height:32px;border-radius:50%;background:var(--sunk);display:grid;place-items:center;font-weight:800;color:var(--navy2);font-size:14px}
+.rev p{margin:8px 0 0}
+.rev .rep{margin-top:10px;background:var(--sunk);border-radius:12px;padding:10px 14px;font-size:14.5px}
+.form{padding:18px;display:grid;gap:14px}
+.fl{display:grid;gap:6px;font-weight:700;font-size:14px;min-width:0}
+.fl input,.fl textarea,.fl select{font:inherit;font-weight:500;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:10px 12px;width:100%}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.rate{border:0;padding:0;margin:0;display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
+.rate legend{font-weight:700;font-size:14px;margin-bottom:4px;float:left;width:100%}
+.rate input{position:absolute;opacity:0;pointer-events:none}
+.rate label{font-size:34px;line-height:1;color:var(--line);cursor:pointer}
+.rate input:checked~label,.rate label:hover,.rate label:hover~label{color:var(--star)}
+.rate input:focus-visible+label{outline:3px solid #38bdf8;border-radius:6px}
+.note{font-size:14px;color:var(--muted);margin:0}
+.side{display:grid;gap:16px}
+.side .card{padding:18px}
+.side h3{font-size:16px;font-weight:800;margin-bottom:10px}
+.links{display:grid;gap:2px}
+.links a,.links button{display:flex;gap:12px;align-items:center;padding:10px 6px;border-radius:10px;text-decoration:none;color:inherit;font-weight:700;font-size:15px;border:0;background:none;cursor:pointer;text-align:left;width:100%}
+.links a:hover,.links button:hover{background:var(--sunk)}
+.links svg{width:20px;height:20px;color:var(--link);flex:none}
+.links small{display:block;color:var(--muted);font-weight:500;font-size:13px;overflow-wrap:anywhere}
+dl.info{display:grid;gap:12px;margin:0}
+dl.info dt{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}
+dl.info dd{margin:2px 0 0;font-weight:700;overflow-wrap:anywhere;font-size:15px}
+.crumbs{font-size:14px;color:var(--muted);margin-bottom:16px;display:flex;gap:6px;flex-wrap:wrap}
+.crumbs a{text-decoration:none;font-weight:700}
+
+/* overlays */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(5,9,22,.72);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet{background:var(--surface);color:var(--ink);border-radius:22px;max-width:520px;width:100%;max-height:100%;overflow:auto;padding:24px;position:relative}
+.sheet h2{font-size:22px;font-weight:800;margin-bottom:6px;padding-right:44px}
+.x{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:0;background:var(--sunk);color:var(--ink);cursor:pointer;font-size:20px;line-height:1}
+.steps{margin:14px 0 0;padding-left:22px;display:grid;gap:10px}
+.steps li::marker{font-weight:800;color:var(--acc)}
+.lb{position:fixed;inset:0;z-index:60;background:rgba(3,6,15,.94);display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb figure{margin:0;display:grid;justify-items:center;gap:10px;min-width:0}
+.lb img{max-height:82vh;max-width:100%;border-radius:18px;display:block}
+.lb figcaption{color:#cdd6f0;font-weight:700;text-align:center}
+.lb .nav{width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:24px;cursor:pointer}
+.lb .x{background:rgba(255,255,255,.14);color:#fff;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px))}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:12px;font-weight:700;z-index:70;max-width:calc(100% - 32px);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.badge{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px;background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc)}
+.badge.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.lrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px}
+.lrow img{width:56px;height:56px;border-radius:14px;border:1px solid var(--line)}
+.lrow b{display:block}
+.lrow + .lrow{border-top:1px solid var(--line)}
+pre.json{background:var(--sunk);border-radius:14px;padding:14px;overflow:auto;font-size:13px;max-height:420px;margin:0}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer .w{padding-block:26px 40px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 18px}
+footer a{color:inherit;font-weight:700;text-decoration:none}
+footer a:hover{color:var(--link)}
+@media (prefers-reduced-motion:no-preference){.tile,.cat,.btn{transition:background .15s,filter .15s}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="w">
+    <a class="logo" href="#/" aria-label="Sushil Apps home"><img src="store-icon.svg" alt="" width="34" height="34"><span id="storeName">Sushil Apps</span></a>
+    <div class="search" role="search">
+      <label class="sr" for="q">Search apps</label>
+      <input id="q" type="search" placeholder="Search apps" autocomplete="off" aria-autocomplete="list" aria-controls="sugg" enterkeyhint="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <div class="sugg" id="sugg" role="listbox" hidden></div>
+    </div>
+    <a class="iconbtn" href="#/library" aria-label="My apps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><i class="dot" id="updDot" hidden></i></a>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Switch to dark mode"></button>
+  </div>
+  <div class="w"><nav class="tabs" aria-label="Store sections">
+    <a href="#/" data-tab="home">For you</a>
+    <a href="#/categories" data-tab="categories">Categories</a>
+    <a href="#/new" data-tab="new">New &amp; updated</a>
+    <a href="#/library" data-tab="library">My apps</a>
+  </nav></div>
+</header>
+
+<main class="w" id="view" tabindex="-1" aria-live="polite"></main>
+
+<footer><div class="w">
+  <span id="footName">Sushil Apps · Made in Pune</span>
+  <nav aria-label="Footer">
+    <a href="#/developer">About the developer</a>
+    <a href="#/help">Help: installing apps</a>
+    <a href="#/publish">Publish an app</a>
+  </nav>
+</div></footer>
+
+<!-- Netlify registers these forms at deploy time; the page posts to them with fetch -->
+<form name="download" data-netlify="true" hidden><input name="app"><input name="version"></form>
+<form name="review" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="rating"><input name="name"><textarea name="review"></textarea><input name="bot-field"></form>
+<form name="report" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="reason"><textarea name="details"></textarea><input name="contact"><input name="bot-field"></form>
+<form name="subscribe" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="contact"><input name="bot-field"></form>
+
+<script src="vendor/qrcode.js"></script>
+<script>
+(function(){
+"use strict";
+/* ---------- tiny helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fdate=s=>{if(!s)return"";const[y,m,d]=s.split("-").map(Number);return `${d} ${MON[m-1]} ${y}`};
+const store={get(k,d){try{const v=localStorage.getItem("sa."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("sa."+k,JSON.stringify(v))}catch(e){}}};
+const post=(name,fields)=>fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({"form-name":name,...fields}).toString()});
+const isPhone=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
+const isAndroid=/Android/i.test(navigator.userAgent);
+function toast(t){const el=document.createElement("div");el.className="toast";el.setAttribute("role","status");el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),2600)}
+const I={
+  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  heartF:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>',
+  web:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>',
+  mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  flag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>',
+  noads:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg>',
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+  free:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>',
+  sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>'
+};
+
+/* ---------- theme ---------- */
+const root=document.documentElement;
+function isDark(){const t=root.dataset.theme;return t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function paintTheme(){const b=$("#themeBtn");b.innerHTML=isDark()?I.sun:I.moon;b.setAttribute("aria-label",isDark()?"Switch to light mode":"Switch to dark mode")}
+const savedTheme=store.get("theme",null);if(savedTheme)root.dataset.theme=savedTheme;
+$("#themeBtn").addEventListener("click",()=>{const t=isDark()?"light":"dark";root.dataset.theme=t;store.set("theme",t);paintTheme()});
+paintTheme();
+
+/* ---------- data ---------- */
+let D=null, APPS=[], BYID={};
+const catOf=id=>D.categories.find(c=>c.id===id)||{id,name:id,emoji:"•"};
+function rating(a){const r=a.reviews||[];if(!r.length)return null;const avg=r.reduce((s,x)=>s+Number(x.rating||0),0)/r.length;return{avg:Math.round(avg*10)/10,n:r.length}}
+function libState(a){const lib=store.get("lib",{}),me=lib[a.id];if(!me)return null;return{...me,update:Number(me.code||0)<Number(a.versionCode||0)}}
+function updatesCount(){return APPS.filter(a=>{const s=libState(a);return s&&s.update}).length}
+function appURL(a){return location.origin+location.pathname+"#/app/"+a.id}
+
+/* ---------- pieces ---------- */
+function tile(a){
+  const r=rating(a), c=catOf(a.category);
+  return `<a class="card tile" href="#/app/${esc(a.id)}"><img src="${esc(a.icon)}" alt="" width="68" height="68" loading="lazy"><div style="min-width:0"><b>${esc(a.name)}</b>
+  <div class="meta num"><span>${esc(c.name)}</span>${r?`<span>${r.avg} <span class="stars-s">★</span></span>`:""}<span>${esc(a.size)}</span>${a.price&&a.price!=="Free"?`<span>${esc(a.price)}</span>`:""}</div>
+  <p>${esc(a.tagline)}</p></div></a>`;
+}
+function catTile(c,n){
+  return `<a class="card cat" href="#/category/${esc(c.id)}"><span class="e" aria-hidden="true">${esc(c.emoji)}</span><span>${esc(c.name)}<small class="num">${n?n+(n>1?" apps":" app"):"Coming soon"}</small></span></a>`;
+}
+function setTab(t){$$(".tabs a").forEach(a=>{if(a.dataset.tab===t)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})}
+function title(t){document.title=t?`${t} · ${D.store.name}`:`${D.store.name}: ${D.store.tagline}`}
+
+/* ---------- views ---------- */
+function vHome(){
+  setTab("home");title("");
+  const feat=(D.featured||[]).map(id=>BYID[id]).filter(Boolean);
+  const f=feat[0];
+  const used=D.categories.map(c=>[c,APPS.filter(a=>a.category===c.id).length]).filter(x=>x[1]);
+  const recent=[...APPS].sort((a,b)=>(b.updated||"").localeCompare(a.updated||""));
+  return `
+  ${f?`<section class="sec" aria-label="Featured app"><a class="hero" href="#/app/${esc(f.id)}" style="background:radial-gradient(90% 120% at 100% 0%,color-mix(in srgb,${esc(f.color||"#13235b")} 40%,#3b63d6) 0%,transparent 60%),linear-gradient(150deg,${esc(f.color||"#13235b")},#0d1a4a)">
+    <div class="txt"><div class="k">Featured app</div><h2>${esc(f.name)}</h2><p>${esc(f.tagline)}</p>
+      <div class="row"><img src="${esc(f.icon)}" alt="" width="56" height="56"><span><b>${esc(f.price||"Free")} · ${esc(f.size)}</b><small>${esc(catOf(f.category).name)}${f.ads===false?" · No ads":""}</small></span><span class="btn go" style="margin-left:auto">${I.dl}See app</span></div></div>
+    <div class="peek" aria-hidden="true">${(f.screenshots||[]).slice(0,2).map(s=>`<img src="${esc(s.src)}" alt="">`).join("")}</div></a></section>`:""}
+  <section class="sec"><div class="sec-h"><h2>All apps</h2><span class="muted num">${APPS.length} ${APPS.length===1?"app":"apps"}</span></div><div class="grid">${APPS.map(tile).join("")}</div></section>
+  ${recent.length>1?`<section class="sec"><div class="sec-h"><h2>New &amp; updated</h2><a href="#/new">See all</a></div><div class="grid">${recent.slice(0,4).map(tile).join("")}</div></section>`:""}
+  <section class="sec"><div class="sec-h"><h2>Browse by category</h2><a href="#/categories">All categories</a></div><div class="cats">${used.map(([c,n])=>catTile(c,n)).join("")}</div></section>
+  <section class="sec" aria-label="Why these apps"><div class="trust">
+    <div class="card">${I.shield}<p style="margin:0"><b>Private by design</b><span>No sign-up. Your records stay on your phone.</span></p></div>
+    <div class="card">${I.noads}<p style="margin:0"><b>No ads</b><span>Clean apps with nothing selling at you.</span></p></div>
+    <div class="card">${I.bell}<p style="margin:0"><b>Know about updates</b><span>My apps shows when a newer version is out.</span></p></div>
+  </div></section>`;
+}
+function vCategories(){
+  setTab("categories");title("Categories");
+  return `<section class="sec"><div class="sec-h"><h2>Categories</h2></div><div class="cats">${D.categories.map(c=>catTile(c,APPS.filter(a=>a.category===c.id).length)).join("")}</div></section>`;
+}
+function vCategory(id){
+  setTab("categories");const c=catOf(id);title(c.name);
+  const list=APPS.filter(a=>a.category===id);
+  return `<nav class="crumbs" aria-label="Breadcrumb"><a href="#/categories">Categories</a><span aria-hidden="true">›</span><span>${esc(c.name)}</span></nav>
+  <section class="sec"><div class="sec-h"><h2>${esc(c.emoji)} ${esc(c.name)}</h2></div>${list.length?`<div class="grid">${list.map(tile).join("")}</div>`:`<div class="card empty"><b>No apps here yet</b>New apps in ${esc(c.name)} will show up here.</div>`}</section>`;
+}
+function vNew(){
+  setTab("new");title("New & updated");
+  const list=[...APPS].sort((a,b)=>(b.updated||"").localeCompare(a.updated||""));
+  return `<section class="sec"><div class="sec-h"><h2>New &amp; updated</h2></div><div class="grid">${list.map(a=>tile(a).replace("<p>",`<p><span class="badge ok">v${esc(a.version)} · ${esc(fdate(a.updated))}</span> `)).join("")}</div></section>`;
+}
+function vSearch(q){
+  setTab("");title(`Search: ${q}`);
+  const res=search(q);
+  return `<section class="sec"><div class="sec-h"><h2>Results for “${esc(q)}”</h2><span class="muted num">${res.length}</span></div>
+  ${res.length?`<div class="grid">${res.map(tile).join("")}</div>`:`<div class="card empty"><b>No apps match “${esc(q)}”</b>Try a shorter word, like “maid”, “salary” or “expiry”.<div style="margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">${D.categories.filter(c=>APPS.some(a=>a.category===c.id)).map(c=>`<a class="chip" href="#/category/${esc(c.id)}">${esc(c.emoji)} ${esc(c.name)}</a>`).join("")}</div></div>`}</section>`;
+}
+function vLibrary(){
+  setTab("library");title("My apps");
+  const lib=store.get("lib",{}), wish=store.get("wish",[]);
+  const mine=APPS.filter(a=>lib[a.id]), wl=APPS.filter(a=>wish.includes(a.id));
+  const row=(a,right)=>`<div class="lrow"><img src="${esc(a.icon)}" alt="" width="56" height="56"><div style="min-width:0"><a href="#/app/${esc(a.id)}" style="color:inherit;text-decoration:none"><b>${esc(a.name)}</b></a>${right}</div>`;
+  return `<section class="sec"><div class="sec-h"><h2>Downloaded on this device</h2></div>
+  ${mine.length?`<div class="card">${mine.map(a=>{const s=libState(a);return row(a,`<span class="muted num" style="font-size:14px">You have v${esc(s.version)} · latest v${esc(a.version)}</span></div>${s.update?`<button class="btn go" data-install="${esc(a.id)}" type="button">${I.dl}Update</button>`:`<span class="badge ok">Up to date</span>`}</div>`)}).join("")}</div>
+  <p class="note" style="margin-top:10px">This list comes from downloads made in this browser. If you installed an app another way, it won't show here.</p>`:`<div class="card empty"><b>Nothing downloaded yet</b>Apps you download here appear in this list, with a note when an update is out.</div>`}</section>
+  <section class="sec"><div class="sec-h"><h2>Wishlist</h2></div>
+  ${wl.length?`<div class="card">${wl.map(a=>row(a,`<span class="muted" style="font-size:14px">${esc(a.tagline)}</span></div><button class="btn out" data-unwish="${esc(a.id)}" type="button">Remove</button></div>`)).join("")}</div>`:`<div class="card empty"><b>Your wishlist is empty</b>Tap the heart on an app to save it for later.</div>`}</section>`;
+}
+function vDeveloper(){
+  setTab("");title(D.store.developer);
+  return `<section class="sec"><div class="card" style="padding:24px;display:grid;gap:10px">
+    <h1 style="font-size:28px;font-weight:800">${esc(D.store.developer)}</h1>
+    <p class="muted" style="margin:0">Independent developer in ${esc(D.store.city)}. Makes simple, private apps for Indian homes, in English, Hindi and Marathi.</p>
+    <div class="links" style="max-width:420px">${contactLink()}</div></div></section>
+  <section class="sec"><div class="sec-h"><h2>Apps by ${esc(D.store.developer)}</h2></div><div class="grid">${APPS.map(tile).join("")}</div></section>`;
+}
+function contactLink(){return `<a href="mailto:${esc(D.store.email)}">${I.mail}<span>Email the developer<small id="devMail">${esc(D.store.email)}</small></span></a><button type="button" data-copy="${esc(D.store.email)}">${I.free}<span>Copy email address</span></button>`}
+function vHelp(){
+  setTab("");title("Installing apps");
+  return `<section class="sec prose"><h1 style="font-size:28px;font-weight:800;margin-bottom:12px">Installing apps from ${esc(D.store.name)}</h1>
+  <p>Apps here are Android app files (APK). Installing one takes about a minute.</p>
+  <ol class="steps"><li>On your Android phone, open the app's page and tap <b>Install</b>. Accept the download.</li><li>Open the downloaded file from your notifications or the <b>Downloads</b> folder.</li><li>If Android asks, allow your browser or Files app to <b>install unknown apps</b>, then go back.</li><li>Tap <b>Install</b>, then <b>Open</b>.</li></ol>
+  <h2 style="font-size:20px;font-weight:800;margin:26px 0 8px">“Play Protect doesn't recognise this developer”</h2>
+  <p>That message appears for apps installed outside Google Play. Choose <b>More details → Install anyway</b>.</p>
+  <h2 style="font-size:20px;font-weight:800;margin:26px 0 8px">Updating</h2>
+  <p>Download the new version from the same page and install it over the old one. Your data stays. <a href="#/library">My apps</a> tells you when an update is out.</p>
+  <h2 style="font-size:20px;font-weight:800;margin:26px 0 8px">On a computer?</h2>
+  <p>Open an app's page and scan the QR code with your phone's camera to open it there.</p></section>`;
+}
+function vApp(id){
+  const a=BYID[id];if(!a)return vMissing();
+  setTab("");title(a.name);
+  const c=catOf(a.category), r=rating(a), s=libState(a), wish=store.get("wish",[]).includes(a.id);
+  const latest=(a.changelog||[])[0], older=(a.changelog||[]).slice(1);
+  const others=APPS.filter(x=>x.id!==a.id);
+  const instLabel=s?(s.update?"Update":"Download again"):"Install";
+  const stats=[
+    r?`<div class="stat"><b>${r.avg} ★</b><span>${r.n} ${r.n>1?"reviews":"review"}</span></div>`:"",
+    a.downloads?`<div class="stat"><b>${esc(a.downloads)}</b><span>Downloads</span></div>`:"",
+    `<div class="stat"><b>${esc(a.size)}</b><span>Download</span></div>`,
+    `<div class="stat"><b>${esc(a.contentRating||"Everyone")}</b><span>Rated for</span></div>`,
+    `<div class="stat"><b>${esc(a.price||"Free")}</b><span>${a.ads===false?"No ads":"Contains ads"}</span></div>`
+  ].join("");
+  return `<nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Apps</a><span aria-hidden="true">›</span><a href="#/category/${esc(c.id)}">${esc(c.name)}</a><span aria-hidden="true">›</span><span>${esc(a.name)}</span></nav>
+  <section class="ahead">
+    <img class="ic" src="${esc(a.icon)}" alt="${esc(a.name)} icon" width="120" height="120">
+    <div style="min-width:0">
+      <h1>${esc(a.name)}</h1>
+      <a class="dev" href="#/developer">${esc(D.store.developer)}</a>
+      <p class="tg">${esc(a.tagline)}</p>
+      <div class="stats num">${stats}</div>
+      <div class="acts">
+        <button class="btn go" type="button" data-install="${esc(a.id)}">${I.dl}${instLabel}</button>
+        <button class="btn out" type="button" data-wish="${esc(a.id)}" aria-pressed="${wish}">${wish?I.heartF:I.heart}<span>${wish?"In wishlist":"Wishlist"}</span></button>
+        <button class="btn out" type="button" data-share="${esc(a.id)}">${I.share}Share</button>
+      </div>
+      <p class="note num" style="margin-top:10px">Version ${esc(a.version)} · Android ${esc(a.minAndroid)}+${!isAndroid&&isPhone?" · This app is for Android phones":""}</p>
+    </div>
+    <div class="card qr" aria-label="Scan to open on your phone"><div id="qrBox"></div><small>Scan with your phone's camera to install there</small></div>
+  </section>
+  ${(a.screenshots||[]).length?`<section class="sec" aria-label="Screenshots"><div class="rail" tabindex="0">${a.screenshots.map((s,i)=>`<button type="button" data-shot="${i}" aria-label="Open screenshot: ${esc(s.caption)}"><img src="${esc(s.src)}" alt="${esc(s.caption)}" loading="lazy"><small>${esc(s.caption)}</small></button>`).join("")}</div></section>`:""}
+  <div class="cols sec">
+    <div style="min-width:0;display:grid;gap:34px">
+      <section><div class="sec-h"><h2>About this app</h2></div>
+        <div class="prose clamp" id="about"><p>${esc(a.about)}</p><div class="feats">${(a.features||[]).map(f=>`<div><h3>${esc(f.title)}</h3><ul>${f.points.map(p=>`<li>${esc(p)}</li>`).join("")}</ul></div>`).join("")}</div></div>
+        <button class="more" type="button" id="aboutMore" aria-expanded="false" aria-controls="about">Read more</button>
+        <div class="labels"><span>${esc(c.name)}</span>${(a.languages||[]).map(l=>`<span>${esc(l)}</span>`).join("")}${a.ads===false?"<span>No ads</span>":""}${a.inAppPurchases?"<span>In-app purchases</span>":""}</div>
+      </section>
+      ${latest?`<section><div class="sec-h"><h2>What's new</h2></div><div class="card new"><div class="v num">Version ${esc(latest.version)} · ${esc(fdate(latest.date))}</div><ul>${latest.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>
+        ${older.length?`<details class="hist"><summary>Version history</summary><ol>${older.map(v=>`<li><b class="num">Version ${esc(v.version)} · ${esc(fdate(v.date))}</b><ul>${v.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></li>`).join("")}</ol></details>`:""}</section>`:""}
+      ${(a.dataSafety||[]).length?`<section><div class="sec-h"><h2>Data safety</h2>${a.privacy?`<a href="${esc(a.privacy)}" target="_blank" rel="noopener">Privacy policy</a>`:""}</div><div class="card safety">${a.dataSafety.map(d=>`<div>${I[d.icon]||I.info}<p style="margin:0"><b>${esc(d.title)}</b><span>${esc(d.text)}</span></p></div>`).join("")}</div></section>`:""}
+      <section id="reviews"><div class="sec-h"><h2>Ratings &amp; reviews</h2></div>${reviewsBlock(a)}</section>
+    </div>
+    <aside class="side">
+      <div class="card"><h3>App support</h3><div class="links">
+        ${a.website?`<a href="${esc(a.website)}" target="_blank" rel="noopener">${I.web}<span>Website<small>${esc(a.website.replace(/^https?:\/\//,"").replace(/\/$/,""))}</small></span></a>`:""}
+        ${contactLink()}
+        ${a.privacy?`<a href="${esc(a.privacy)}" target="_blank" rel="noopener">${I.lock}<span>Privacy policy</span></a>`:""}
+        <button type="button" data-notify="${esc(a.id)}">${I.bell}<span>Tell me about updates<small>Get a message when a new version is out</small></span></button>
+        <button type="button" data-report="${esc(a.id)}">${I.flag}<span>Report a problem</span></button>
+      </div></div>
+      <div class="card"><h3>App info</h3><dl class="info num">
+        <div><dt>Version</dt><dd>${esc(a.version)}</dd></div>
+        <div><dt>Updated on</dt><dd>${esc(fdate(a.updated))}</dd></div>
+        ${a.released?`<div><dt>Released on</dt><dd>${esc(fdate(a.released))}</dd></div>`:""}
+        <div><dt>Download size</dt><dd>${esc(a.size)}</dd></div>
+        <div><dt>Requires</dt><dd>Android ${esc(a.minAndroid)} or later</dd></div>
+        <div><dt>Languages</dt><dd>${esc((a.languages||[]).join(", "))}</dd></div>
+        <div><dt>Permissions</dt><dd>${esc((a.permissions||[]).join(", "))}</dd></div>
+        <div><dt>Offered by</dt><dd>${esc(D.store.developer)}</dd></div>
+      </dl></div>
+    </aside>
+  </div>
+  ${others.length?`<section class="sec"><div class="sec-h"><h2>More by ${esc(D.store.developer)}</h2></div><div class="grid">${others.slice(0,6).map(tile).join("")}</div></section>`:""}`;
+}
+function reviewsBlock(a){
+  const r=rating(a), list=a.reviews||[];
+  let out="";
+  if(r){
+    const dist=[5,4,3,2,1].map(n=>list.filter(x=>Number(x.rating)===n).length);
+    out+=`<div class="card rsum"><div class="big num">${r.avg}<small><span class="stars-s">${"★".repeat(Math.round(r.avg))}</span><br>${r.n} ${r.n>1?"reviews":"review"}</small></div><div class="bars num">${dist.map((n,i)=>`<div><span>${5-i}</span><i style="--p:${Math.round(n/list.length*100)}%"></i></div>`).join("")}</div></div>
+    <div style="margin-top:6px">${list.map(v=>`<div class="rev"><div class="who"><span class="av" aria-hidden="true">${esc((v.name||"?").trim()[0]||"?").toUpperCase()}</span><span>${esc(v.name||"A user")}</span></div><div class="num" style="font-size:13px;color:var(--muted);margin-top:4px"><span class="stars-s" aria-label="${esc(v.rating)} out of 5">${"★".repeat(Number(v.rating))}<span style="color:var(--line)">${"★".repeat(5-Number(v.rating))}</span></span> · ${esc(fdate(v.date))}</div><p>${esc(v.text)}</p>${v.reply?`<div class="rep"><b>${esc(D.store.developer)}</b><br>${esc(v.reply)}</div>`:""}</div>`).join("")}</div>`;
+  }else{
+    out+=`<p class="note" style="margin-bottom:12px">No reviews yet. Be the first to rate ${esc(a.name)}.</p>`;
+  }
+  out+=`<form class="card form" id="revForm" style="margin-top:14px" novalidate>
+    <h3 style="font-size:17px;font-weight:800">Rate this app</h3>
+    <fieldset class="rate"><legend>Your rating</legend>${[5,4,3,2,1].map(n=>`<input type="radio" id="r${n}" name="rating" value="${n}"><label for="r${n}" title="${n} star${n>1?"s":""}">★</label>`).join("")}</fieldset>
+    <label class="fl" for="revText">Your review<textarea id="revText" name="review" rows="4" maxlength="1500" placeholder="What do you like? What should be better?"></textarea></label>
+    <label class="fl" for="revName">Your name (shown with the review)<input id="revName" name="name" maxlength="60" autocomplete="given-name"></label>
+    <p hidden><label>Leave empty <input name="bot-field"></label></p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn go" type="submit">Post review</button><span class="note">Reviews appear after the developer checks them.</span></div>
+    <p class="note" id="revOut" role="status" hidden></p>
+  </form>`;
+  return out;
+}
+function vMissing(){title("Not found");return `<div class="card empty"><b>We couldn't find that app</b><a href="#/">Back to all apps</a></div>`}
+function vPublish(){
+  setTab("");title("Publish an app");
+  const cats=D.categories.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
+  return `<section class="sec prose" style="max-width:none">
+  <h1 style="font-size:28px;font-weight:800">Publish an app</h1>
+  <p class="muted" style="max-width:68ch">For the store owner. Fill this in, then copy the result into <b>apps.json</b>. Put the app's files in <b>apps/&lt;app-id&gt;/</b> and upload the whole store folder to Netlify again.</p>
+  <div class="cols" style="margin-top:18px">
+  <form class="card form" id="pubForm">
+    <div class="two"><label class="fl">App name<input name="name" required placeholder="Nudge"></label><label class="fl">App id (for the link)<input name="id" required placeholder="nudge" pattern="[a-z0-9-]+"></label></div>
+    <label class="fl">Short description<input name="tagline" maxlength="110" placeholder="One line people see in lists"></label>
+    <div class="two"><label class="fl">Category<select name="category">${cats}</select></label><label class="fl">Price<input name="price" value="Free"></label></div>
+    <div class="two"><label class="fl">Version<input name="version" placeholder="1.0"></label><label class="fl">Version code (whole number)<input name="versionCode" inputmode="numeric" placeholder="1"></label></div>
+    <div class="two"><label class="fl">Download size<input name="size" placeholder="5.2 MB"></label><label class="fl">Requires Android<input name="minAndroid" value="8.0"></label></div>
+    <div class="two"><label class="fl">APK file name<input name="apkFile" placeholder="Nudge.apk"></label><label class="fl">Theme colour<input name="color" type="color" value="#13235b"></label></div>
+    <label class="fl">Screenshots (one file name per line, then | caption)<textarea name="shots" rows="4" placeholder="1-home.jpg | Home screen&#10;2-reminder.jpg | Set a reminder"></textarea></label>
+    <label class="fl">About this app<textarea name="about" rows="4"></textarea></label>
+    <label class="fl">Features (one per line: Title: point; point)<textarea name="features" rows="4" placeholder="Reminders: Daily; Weekly; Monthly"></textarea></label>
+    <label class="fl">What's new (one change per line)<textarea name="whatsnew" rows="3"></textarea></label>
+    <label class="fl">Languages (comma separated)<input name="languages" value="English"></label>
+    <label class="fl">Permissions (comma separated)<input name="permissions" placeholder="Notifications, Internet"></label>
+    <label class="fl">Website (optional)<input name="website" type="url" placeholder="https://"></label>
+    <div><label style="display:flex;gap:8px;align-items:center;font-weight:700"><input type="checkbox" name="ads"> Contains ads</label><label style="display:flex;gap:8px;align-items:center;font-weight:700"><input type="checkbox" name="iap"> In-app purchases</label></div>
+  </form>
+  <div class="side" style="position:sticky;top:130px">
+    <div class="card"><h3>Paste into apps.json</h3><p class="note" style="margin-bottom:10px">Add this inside the <b>"apps": [ … ]</b> list, with a comma after the app before it.</p><pre class="json" id="pubOut"></pre><button class="btn go" type="button" id="pubCopy" style="margin-top:12px">Copy</button></div>
+    <div class="card"><h3>Files to upload</h3><ul class="note" id="pubFiles" style="padding-left:18px;display:grid;gap:4px"></ul></div>
+  </div></div></section>`;
+}
+function pubBuild(){
+  const f=$("#pubForm");if(!f)return;const v=n=>(f.elements[n].value||"").trim();
+  const id=v("id").toLowerCase().replace(/[^a-z0-9-]+/g,"-")||"my-app",base=`apps/${id}/`;
+  const shots=v("shots").split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{const[a,b]=l.split("|");return{src:base+"shots/"+a.trim(),caption:(b||"").trim()}});
+  const today=new Date().toISOString().slice(0,10);
+  const o={id,name:v("name"),tagline:v("tagline"),category:v("category"),tags:[],icon:base+"icon.png",color:v("color"),apk:base+(v("apkFile")||"app.apk"),
+    version:v("version"),versionCode:Number(v("versionCode"))||1,updated:today,released:today,size:v("size"),minAndroid:v("minAndroid"),price:v("price")||"Free",
+    ads:f.elements.ads.checked,inAppPurchases:f.elements.iap.checked,contentRating:"Everyone",downloads:null,
+    languages:v("languages").split(",").map(s=>s.trim()).filter(Boolean),permissions:v("permissions").split(",").map(s=>s.trim()).filter(Boolean),
+    website:v("website"),privacy:base+"privacy.html",shareText:`${v("name")}: ${v("tagline")}`,screenshots:shots,about:v("about"),
+    features:v("features").split("\n").filter(l=>l.includes(":")).map(l=>{const i=l.indexOf(":");return{title:l.slice(0,i).trim(),points:l.slice(i+1).split(";").map(s=>s.trim()).filter(Boolean)}}),
+    dataSafety:[],changelog:v("whatsnew")?[{version:v("version"),date:today,notes:v("whatsnew").split("\n").map(s=>s.trim()).filter(Boolean)}]:[],reviews:[]};
+  $("#pubOut").textContent=JSON.stringify(o,null,2);
+  $("#pubFiles").innerHTML=[o.icon+"  (512 × 512 PNG)",o.apk,o.privacy,...shots.map(s=>s.src)].map(x=>`<li><code>${esc(x)}</code></li>`).join("");
+}
+
+/* ---------- search ---------- */
+function search(q){
+  q=q.trim().toLowerCase();if(!q)return[];
+  const words=q.split(/\s+/);
+  return APPS.map(a=>{const hay=[a.name,a.tagline,catOf(a.category).name,(a.tags||[]).join(" "),a.about].join(" ").toLowerCase();
+    let s=0;for(const w of words){if(!hay.includes(w))return null;if(a.name.toLowerCase().includes(w))s+=3;if((a.tags||[]).some(t=>t.startsWith(w)))s+=2;s+=1}
+    return{a,s}}).filter(Boolean).sort((x,y)=>y.s-x.s).map(x=>x.a);
+}
+const qEl=$("#q"),sg=$("#sugg");let sIdx=-1;
+function showSugg(){const v=qEl.value.trim();if(!v){sg.hidden=true;return}
+  const res=search(v).slice(0,5);sIdx=-1;
+  sg.innerHTML=(res.length?res.map(a=>`<a role="option" href="#/app/${esc(a.id)}"><img src="${esc(a.icon)}" alt=""><span><b>${esc(a.name)}</b><small>${esc(catOf(a.category).name)}</small></span></a>`).join(""):"")+`<a role="option" href="#/search/${encodeURIComponent(v)}"><span style="width:36px;text-align:center" aria-hidden="true">🔍</span><span>See all results for “${esc(v)}”</span></a>`;
+  sg.hidden=false}
+qEl.addEventListener("input",showSugg);
+qEl.addEventListener("focus",showSugg);
+qEl.addEventListener("keydown",e=>{const items=$$("a",sg);
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(!items.length)return;sIdx=(sIdx+(e.key==="ArrowDown"?1:-1)+items.length)%items.length;items.forEach((x,i)=>x.setAttribute("aria-selected",i===sIdx))}
+  else if(e.key==="Enter"){e.preventDefault();const v=qEl.value.trim();if(sIdx>=0&&items[sIdx])location.hash=items[sIdx].getAttribute("href");else if(v)location.hash="#/search/"+encodeURIComponent(v);sg.hidden=true;qEl.blur()}
+  else if(e.key==="Escape"){sg.hidden=true;qEl.blur()}});
+document.addEventListener("click",e=>{if(!e.target.closest(".search"))sg.hidden=true});
+sg.addEventListener("click",()=>{sg.hidden=true;qEl.blur()});
+
+/* ---------- overlays ---------- */
+let lastFocus=null;
+function openSheet(html,label){
+  lastFocus=document.activeElement;
+  const ov=document.createElement("div");ov.className="ov";ov.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(label)}"><button class="x" type="button" aria-label="Close">×</button>${html}</div>`;
+  document.body.appendChild(ov);document.body.style.overflow="hidden";
+  const close=()=>{ov.remove();document.body.style.overflow="";if(lastFocus)lastFocus.focus()};
+  ov.addEventListener("click",e=>{if(e.target===ov||e.target.classList.contains("x")||e.target.closest("[data-close]"))close()});
+  ov.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+  setTimeout(()=>($("input,textarea,select,button.btn",ov)||$(".x",ov)).focus(),30);
+  return{ov,close};
+}
+function lightbox(a,i){
+  lastFocus=document.activeElement;const s=a.screenshots;
+  const lb=document.createElement("div");lb.className="lb";lb.setAttribute("role","dialog");lb.setAttribute("aria-modal","true");lb.setAttribute("aria-label","Screenshots");
+  const draw=()=>{lb.innerHTML=`<button class="nav" type="button" data-d="-1" aria-label="Previous">‹</button><figure><img src="${esc(s[i].src)}" alt="${esc(s[i].caption)}"><figcaption class="num">${esc(s[i].caption)} · ${i+1}/${s.length}</figcaption></figure><button class="nav" type="button" data-d="1" aria-label="Next">›</button><button class="x" type="button" aria-label="Close">×</button>`};
+  draw();document.body.appendChild(lb);document.body.style.overflow="hidden";$(".x",lb).focus();
+  const close=()=>{lb.remove();document.body.style.overflow="";if(lastFocus)lastFocus.focus()};
+  const go=d=>{i=(i+d+s.length)%s.length;draw();$(".x",lb).focus()};
+  lb.addEventListener("click",e=>{const b=e.target.closest("button");if(e.target===lb||(b&&b.classList.contains("x")))close();else if(b&&b.dataset.d)go(Number(b.dataset.d))});
+  lb.addEventListener("keydown",e=>{if(e.key==="Escape")close();if(e.key==="ArrowRight")go(1);if(e.key==="ArrowLeft")go(-1)});
+  let x0=null;lb.addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});
+  lb.addEventListener("touchend",e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)go(dx<0?1:-1);x0=null});
+}
+
+/* ---------- actions ---------- */
+function install(a){
+  const lib=store.get("lib",{});lib[a.id]={version:a.version,code:a.versionCode,at:new Date().toISOString()};store.set("lib",lib);
+  try{post("download",{app:a.id,version:a.version}).catch(()=>{})}catch(e){}
+  const link=document.createElement("a");link.href=a.apk;link.download=a.apk.split("/").pop();document.body.appendChild(link);link.click();link.remove();
+  paintUpd();
+  const desktop=!isPhone;
+  openSheet(`<h2>${desktop?"Downloading to this computer":"Your download has started"}</h2>
+    ${desktop?`<p class="note">Apps run on Android phones. It's easier to open this page on your phone: scan the QR code on the app page, or send the link to yourself on WhatsApp.</p><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><a class="btn go" href="https://wa.me/?text=${encodeURIComponent(a.name+": "+appURL(a))}" target="_blank" rel="noopener">Send link to my phone</a><button class="btn out" type="button" data-close>OK</button></div>`
+    :`<p class="note">Then install it in a few taps:</p><ol class="steps"><li>Open <b>${esc(link.download)}</b> from the notification or your <b>Downloads</b> folder.</li><li>If asked, allow this browser to <b>install unknown apps</b>, then go back.</li><li>Tap <b>Install</b>. If Play Protect warns you, choose <b>More details → Install anyway</b>.</li><li>Tap <b>Open</b>. Updates install over the old version and keep your data.</li></ol><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><a class="btn out" href="${esc(a.apk)}" download>Download didn't start? Try again</a><button class="btn go" type="button" data-close>Got it</button></div>`}`,"Install "+a.name);
+}
+async function share(a){
+  const url=appURL(a),text=a.shareText||a.name;
+  if(navigator.share){try{await navigator.share({title:a.name,text,url});return}catch(e){if(e&&e.name==="AbortError")return}}
+  const {ov}=openSheet(`<h2>Share ${esc(a.name)}</h2><p class="note">Send the link to friends and family.</p>
+    <div style="display:grid;gap:10px;margin-top:16px"><a class="btn go" href="https://wa.me/?text=${encodeURIComponent(text+" "+url)}" target="_blank" rel="noopener">Share on WhatsApp</a>
+    <button class="btn out" type="button" data-copy="${esc(url)}">Copy link</button><p class="note num" style="overflow-wrap:anywhere;user-select:all">${esc(url)}</p></div>`,"Share");
+}
+function copy(t,btn){
+  const done=()=>toast("Copied");
+  try{navigator.clipboard.writeText(t).then(done,()=>toast(t))}catch(e){toast(t)}
+}
+function report(a){
+  const {ov,close}=openSheet(`<h2>Report a problem</h2><p class="note">Tell the developer what went wrong with ${esc(a.name)}.</p>
+  <form class="form" style="padding:0;margin-top:14px" id="repForm">
+    <label class="fl">What's wrong?<select name="reason"><option>The app crashes or won't open</option><option>Something is calculated wrong</option><option>Download or install problem</option><option>A feature request</option><option>Something else</option></select></label>
+    <label class="fl">Details<textarea name="details" rows="4" maxlength="2000" required placeholder="What did you do, and what happened?"></textarea></label>
+    <label class="fl">Phone or email (optional)<input name="contact" maxlength="120" placeholder="Only if you want a reply"></label>
+    <p hidden><label>Leave empty <input name="bot-field"></label></p>
+    <button class="btn go" type="submit">Send report</button><p class="note" role="status" id="repOut" hidden></p></form>`,"Report a problem");
+  $("#repForm",ov).addEventListener("submit",async e=>{e.preventDefault();const f=e.target,out=$("#repOut",ov);
+    if(!f.details.value.trim()){out.textContent="Please describe the problem.";out.hidden=false;return}
+    try{const r=await post("report",{app:a.id,reason:f.reason.value,details:f.details.value,contact:f.contact.value,"bot-field":f["bot-field"].value});if(!r.ok)throw 0;close();toast("Thanks, your report was sent")}
+    catch(err){out.textContent="Couldn't send. Check your internet and try again.";out.hidden=false}});
+}
+function notify(a){
+  const {ov,close}=openSheet(`<h2>Get update news</h2><p class="note">Leave your WhatsApp number or email and the developer will tell you when ${esc(a.name)} has a new version. It's used for nothing else.</p>
+  <form class="form" style="padding:0;margin-top:14px" id="subForm"><label class="fl">WhatsApp number or email<input name="contact" required maxlength="120" autocomplete="email"></label><p hidden><label>Leave empty <input name="bot-field"></label></p>
+  <button class="btn go" type="submit">Notify me</button><p class="note" role="status" id="subOut" hidden></p></form>`,"Get update news");
+  $("#subForm",ov).addEventListener("submit",async e=>{e.preventDefault();const f=e.target,out=$("#subOut",ov);
+    if(!f.contact.value.trim()){out.textContent="Enter a number or email.";out.hidden=false;return}
+    try{const r=await post("subscribe",{app:a.id,contact:f.contact.value,"bot-field":f["bot-field"].value});if(!r.ok)throw 0;close();toast("Done. You'll hear about updates.")}
+    catch(err){out.textContent="Couldn't send. Check your internet and try again.";out.hidden=false}});
+}
+function paintUpd(){$("#updDot").hidden=!updatesCount()}
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-install],[data-wish],[data-unwish],[data-share],[data-shot],[data-copy],[data-report],[data-notify],#aboutMore,#pubCopy");if(!t)return;
+  if(t.dataset.install){install(BYID[t.dataset.install]);if(location.hash.startsWith("#/library"))render()}
+  else if(t.dataset.wish){const w=store.get("wish",[]),id=t.dataset.wish,on=!w.includes(id);store.set("wish",on?[...w,id]:w.filter(x=>x!==id));t.setAttribute("aria-pressed",on);t.innerHTML=(on?I.heartF:I.heart)+`<span>${on?"In wishlist":"Wishlist"}</span>`;toast(on?"Added to wishlist":"Removed from wishlist")}
+  else if(t.dataset.unwish){store.set("wish",store.get("wish",[]).filter(x=>x!==t.dataset.unwish));render()}
+  else if(t.dataset.share)share(BYID[t.dataset.share]);
+  else if(t.dataset.shot){const id=(location.hash.match(/#\/app\/([^/]+)/)||[])[1];lightbox(BYID[id],Number(t.dataset.shot))}
+  else if(t.dataset.copy)copy(t.dataset.copy,t);
+  else if(t.dataset.report)report(BYID[t.dataset.report]);
+  else if(t.dataset.notify)notify(BYID[t.dataset.notify]);
+  else if(t.id==="aboutMore"){const ab=$("#about"),open=ab.classList.toggle("clamp");t.textContent=open?"Read more":"Show less";t.setAttribute("aria-expanded",String(!open))}
+  else if(t.id==="pubCopy")copy($("#pubOut").textContent,t);
+});
+
+/* ---------- router ---------- */
+function render(){
+  const h=decodeURIComponent(location.hash.replace(/^#\/?/,""));const [p,arg]=[h.split("/")[0],h.split("/").slice(1).join("/")];
+  const V=$("#view");
+  V.innerHTML= p==="app"?vApp(arg): p==="categories"?vCategories(): p==="category"?vCategory(arg): p==="new"?vNew(): p==="library"?vLibrary():
+    p==="search"?vSearch(arg): p==="developer"?vDeveloper(): p==="help"?vHelp(): p==="publish"?vPublish(): vHome();
+  qEl.value=p==="search"?arg:"";sg.hidden=true;
+  if(p==="app"&&BYID[arg]){
+    const a=BYID[arg],box=$("#qrBox");
+    if(box&&window.qrcode){try{const q=qrcode(0,"M");q.addData(appURL(a));q.make();box.innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){box.closest(".qr").remove()}}
+    const ab=$("#about");if(ab&&ab.scrollHeight<=340){ab.classList.remove("clamp");$("#aboutMore").remove()}
+    const f=$("#revForm");f.addEventListener("submit",async e=>{e.preventDefault();const out=$("#revOut");const rt=(f.querySelector("input[name=rating]:checked")||{}).value;
+      if(!rt){out.textContent="Tap a star to rate first.";out.hidden=false;return}
+      const btn=f.querySelector("button[type=submit]");btn.disabled=true;
+      try{const r=await post("review",{app:a.id,rating:rt,name:f.name.value,review:f.review.value,"bot-field":f["bot-field"].value});if(!r.ok)throw 0;f.reset();out.textContent="Thank you! Your review will appear once it's checked.";out.hidden=false}
+      catch(err){out.textContent="Couldn't send. Check your internet and try again.";out.hidden=false}finally{btn.disabled=false}});
+  }
+  if(p==="publish"){$("#pubForm").addEventListener("input",pubBuild);pubBuild()}
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",()=>{render();$("#view").focus({preventScroll:true})});
+
+/* ---------- boot ---------- */
+fetch("apps.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{
+  D=d;APPS=d.apps||[];BYID=Object.fromEntries(APPS.map(a=>[a.id,a]));
+  $("#storeName").textContent=d.store.name;$("#footName").textContent=`${d.store.name} · Made in ${d.store.city}`;
+  render();paintUpd();
+}).catch(()=>{$("#view").innerHTML=`<div class="card empty"><b>The store couldn't load</b>Check your internet connection and refresh the page.</div>`});
+
+if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+})();
+</script>
+</body>
+</html>

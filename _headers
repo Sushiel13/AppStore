@@ -3,3 +3,6 @@
   Content-Disposition: attachment
 /apps.json
   Cache-Control: no-cache
+/owner/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Pro Codes · AppBucket</title>
+<link rel="icon" href="../store-icon.svg" type="image/svg+xml">
+<style>
+/* Owner-only page: makes House Help Tracker Pro unlock codes with the private key, which never leaves this browser */
+:root{--bg:#f4f6fb;--surface:#fff;--sunk:#eaeef7;--ink:#101a3a;--muted:#5d6884;--line:#dde3ee;--navy:#13235b;--acc:#e8650a;--ok:#15803d;--err:#b91c1c;color-scheme:light;
+ --f:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#0a0f1f;--surface:#131a30;--sunk:#1a2341;--ink:#e8ecf8;--muted:#9ba6c3;--line:#26304e;--ok:#4ade80;--err:#f87171;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--f)}
+.top{background:var(--navy);color:#fff}.w{max-width:620px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top .w{padding-block:18px}.top b{font-size:19px}.top span{display:block;color:#c9d4f3;font-size:14px}
+main.w{padding-block:20px 48px;display:grid;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:12px}
+h2{margin:0;font-size:18px}p{margin:0}.muted{color:var(--muted);font-size:14px}
+label{display:grid;gap:6px;font-weight:700;font-size:14px}
+input,select,textarea{font:inherit;font-weight:500;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:10px 12px;width:100%}
+textarea{font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:12px}
+button,.btn{font:inherit;font-weight:800;border:0;border-radius:12px;padding:12px 18px;cursor:pointer;background:var(--navy);color:#fff;text-decoration:none;text-align:center}
+.go{background:var(--acc)}.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}.wa{background:#16a34a}
+.ok{color:var(--ok);font-weight:700}.err{color:var(--err);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+[hidden]{display:none!important}
+</style></head><body>
+<header class="top"><div class="w"><b>House Help Tracker · Pro codes</b><span>Owner page. Don't share this link or your key file.</span></div></header>
+<main class="w">
+ <section class="card" id="keyCard">
+  <h2>1. Load your private key</h2>
+  <p class="muted">Pick <b>HouseHelpTracker-Pro-private-key.json</b>. It's kept only in this browser on this phone, so you do this once. Keep the file safe in Google Drive too.</p>
+  <input type="file" id="keyFile" accept=".json,application/json">
+  <p id="keyMsg" class="muted" role="status"></p>
+ </section>
+ <section class="card" id="makeCard" hidden>
+  <h2>2. Make an unlock code</h2>
+  <p class="muted">Check the UPI payment arrived first. Then copy the phone ID from their WhatsApp message.</p>
+  <label>Phone ID<input id="dev" placeholder="HHT-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false"></label>
+  <div class="two">
+   <label>Plan<select id="plan"><option value="Y">Yearly · ₹399 (366 days)</option><option value="M">Monthly · ₹49 (31 days)</option></select></label>
+   <label>Starts on<input id="start" type="date"></label>
+  </div>
+  <p class="muted" id="expLine"></p>
+  <button class="go" id="make" type="button">Make code</button>
+  <p id="mkErr" class="err" role="alert" hidden></p>
+  <div id="out" hidden style="display:grid;gap:10px">
+   <textarea id="code" rows="4" readonly></textarea>
+   <div class="two"><button class="ghost" id="copy" type="button">Copy message</button><a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">Send on WhatsApp</a></div>
+   <p class="muted">Renewing? Set <b>Starts on</b> to the day their current Pro ends so they don't lose days.</p>
+  </div>
+ </section>
+ <section class="card" id="logCard" hidden>
+  <h2>Codes made on this phone</h2>
+  <div class="scroll"><table><thead><tr><th>Made</th><th>Phone ID</th><th>Plan</th><th>Until</th></tr></thead><tbody id="log"></tbody></table></div>
+  <button class="ghost" id="forget" type="button">Remove the key from this browser</button>
+ </section>
+</main>
+<script>
+(function(){"use strict";
+const $=s=>document.querySelector(s);
+const st={get(k,d){try{const v=localStorage.getItem("hhpro."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("hhpro."+k,JSON.stringify(v))}catch(e){}}};
+const DAYS={M:31,Y:366},NAME={M:"Monthly",Y:"Yearly"};
+const pad=n=>String(n).padStart(2,"0"),isoD=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+let key=null;
+async function loadKey(j){const k=j&&j.key?j.key:j;if(!k||k.kty!=="EC"||k.crv!=="P-256"||!k.d)throw new Error("not a key");
+ key=await crypto.subtle.importKey("jwk",{kty:k.kty,crv:k.crv,x:k.x,y:k.y,d:k.d,ext:true},{name:"ECDSA",namedCurve:"P-256"},false,["sign"]);return k}
+function showReady(){$("#keyMsg").innerHTML='<span class="ok">Key loaded.</span> You can make codes.';$("#makeCard").hidden=false;$("#logCard").hidden=false;drawLog();upd()}
+$("#keyFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());const k=await loadKey(j);st.set("key",k);showReady()}
+ catch(err){$("#keyMsg").innerHTML='<span class="err">That isn\'t the House Help Tracker Pro key file.</span>'}};
+const today=new Date();$("#start").value=isoD(today);
+function expiry(){const s=$("#start").value?new Date($("#start").value+"T00:00"):new Date();const d=new Date(s);d.setDate(d.getDate()+DAYS[$("#plan").value]);return d}
+function upd(){$("#expLine").textContent=`Pro will work until ${expiry().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}.`}
+$("#plan").onchange=upd;$("#start").onchange=upd;
+$("#make").onclick=async()=>{const err=$("#mkErr");err.hidden=true;
+ const dev=$("#dev").value.toUpperCase().replace(/\s+/g,"").replace(/^HHT(?!-)/,"HHT-");
+ if(!/^HHT-[A-Z2-9]{4}-[A-Z2-9]{4}$/.test(dev)){err.textContent="The phone ID looks like HHT-7KQ2-M9XA. Check it and try again.";err.hidden=false;return}
+ const plan=$("#plan").value,e=expiry(),ymd=isoD(e).replace(/-/g,"");
+ const sig=await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},key,new TextEncoder().encode(`HHT1|${dev}|${plan}|${ymd}`));
+ const code=`HHT1${plan}${ymd}-${b64u(sig)}`;$("#dev").value=dev;
+ const until=e.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+ const msg=`Thank you! Your House Help Tracker Pro (${NAME[plan]}) code, valid until ${until}:\n\n${code}\n\nOpen the app → Settings → Enter a code, paste it and tap Unlock Pro.`;
+ $("#code").value=code;$("#out").hidden=false;$("#wa").href="https://wa.me/?text="+encodeURIComponent(msg);
+ $("#copy").onclick=()=>{try{navigator.clipboard.writeText(msg).then(()=>{$("#copy").textContent="Copied"},()=>{$("#code").select()})}catch(x){$("#code").select()}};
+ const log=st.get("log",[]);log.unshift({on:isoD(new Date()),dev,plan,until:isoD(e)});st.set("log",log.slice(0,300));drawLog()};
+function drawLog(){const log=st.get("log",[]);$("#log").innerHTML=log.length?log.map(r=>`<tr><td>${r.on}</td><td>${r.dev}</td><td>${NAME[r.plan]}</td><td>${r.until}</td></tr>`).join(""):'<tr><td colspan="4" class="muted">None yet.</td></tr>'}
+$("#forget").onclick=()=>{try{localStorage.removeItem("hhpro.key")}catch(e){}location.reload()};
+(async()=>{const k=st.get("key",null);if(k){try{await loadKey(k);showReady()}catch(e){}}})();
+})();
+</script>
+</body></html>

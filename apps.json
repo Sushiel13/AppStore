@@ -63,9 +63,9 @@
       "icon": "apps/house-help-tracker/icon.png",
       "color": "#13235b",
       "apk": "apps/house-help-tracker/HouseHelpTracker.apk",
-      "version": "1.20",
-      "versionCode": 21,
-      "updated": "2026-11-02",
+      "version": "1.21",
+      "versionCode": 22,
+      "updated": "2026-11-03",
       "released": "2026-10-19",
       "size": "4.6 MB",
       "minAndroid": "8.0",
@@ -187,6 +187,16 @@
         }
       ],
       "changelog": [
+        {
+          "version": "1.21",
+          "date": "2026-11-03",
+          "notes": [
+            "3 months free: every feature is free for 3 months from today.",
+            "After that, free plan: one house help with attendance and pay keeps working. Your other records stay safe, and backup and restore always work.",
+            "Pro (₹49 a month or ₹399 a year): all your house help, the expiry tracker and reminders, the monthly report, WhatsApp pay slips and paying with a UPI app.",
+            "Getting Pro: Settings → Get Pro. Pay by UPI, send the details on WhatsApp, then enter the unlock code you get back."
+          ]
+        },
         {
           "version": "1.20",
           "date": "2026-11-02",

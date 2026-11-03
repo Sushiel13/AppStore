@@ -233,13 +233,7 @@
         }
       ],
       "reviews": [],
-      "baseDownloads": 0,
-      "webApp": "web/house-help-tracker/",
-      "webMissing": [
-        "Reminders when the app is closed",
-        "Reading packs with the camera (type or say the date instead)",
-        "Fingerprint lock (PIN lock works)"
-      ]
+      "baseDownloads": 0
     }
   ]
 }

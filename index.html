@@ -284,7 +284,6 @@ const isAndroid=/Android/i.test(navigator.userAgent);
 function toast(t){const el=document.createElement("div");el.className="toast";el.setAttribute("role","status");el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),2600)}
 const I={
   dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
-  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>',
   heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
   heartF:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
   share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>',
@@ -434,7 +433,6 @@ function vApp(id){
       <div class="stats num">${stats}</div>
       <div class="acts">
         <button class="btn go" type="button" data-install="${esc(a.id)}">${I.dl}${instLabel}</button>
-        ${a.webApp?`<button class="btn out" type="button" data-web="${esc(a.id)}">${I.globe}Use without download</button>`:""}
         <button class="btn out" type="button" data-wish="${esc(a.id)}" aria-pressed="${wish}">${wish?I.heartF:I.heart}<span>${wish?"In wishlist":"Wishlist"}</span></button>
         <button class="btn out" type="button" data-share="${esc(a.id)}">${I.share}Share</button>
       </div>
@@ -636,23 +634,14 @@ function notify(a){
     try{const r=await post("subscribe",{app:a.id,contact:f.contact.value,"bot-field":f["bot-field"].value});if(!r.ok)throw 0;close();toast("Done. You'll hear about updates.")}
     catch(err){out.textContent="Couldn't send. Check your internet and try again.";out.hidden=false}});
 }
-function webApp(a){
-  const url=new URL(a.webApp,location.href).href;
-  openSheet(`<h2>Use ${esc(a.name)} without a download</h2>
-    <p class="note">It runs in Chrome and installs on your home screen like an app. No APK file, and new versions arrive on their own.</p>
-    <ol class="steps"><li>Tap <b>Open the app</b> below.</li><li>Tap <b>Install</b> on the banner at the bottom, or Chrome's menu <b>⋮ → Add to home screen</b>.</li><li>Open it from your home screen from now on.</li></ol>
-    ${(a.webMissing||[]).length?`<p class="note" style="margin-top:14px"><b>Not in the browser version:</b></p><ul class="note" style="margin:6px 0 0;padding-left:20px">${a.webMissing.map(m=>`<li>${esc(m)}</li>`).join("")}</ul><p class="note" style="margin-top:8px">Everything else works the same. Your records are saved in this browser on this phone, so make a backup from Settings now and then.</p>`:""}
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><a class="btn go" href="${esc(url)}">Open the app</a><button class="btn out" type="button" data-close>Not now</button></div>`,"Use without download");
-}
 function paintUpd(){$("#updDot").hidden=!updatesCount()}
 
 document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-install],[data-web],[data-wish],[data-unwish],[data-share],[data-shot],[data-copy],[data-report],[data-notify],#aboutMore,#pubCopy");if(!t)return;
+  const t=e.target.closest("[data-install],[data-wish],[data-unwish],[data-share],[data-shot],[data-copy],[data-report],[data-notify],#aboutMore,#pubCopy");if(!t)return;
   if(t.dataset.install){install(BYID[t.dataset.install]);if(location.hash.startsWith("#/library"))render()}
   else if(t.dataset.wish){const w=store.get("wish",[]),id=t.dataset.wish,on=!w.includes(id);store.set("wish",on?[...w,id]:w.filter(x=>x!==id));t.setAttribute("aria-pressed",on);t.innerHTML=(on?I.heartF:I.heart)+`<span>${on?"In wishlist":"Wishlist"}</span>`;toast(on?"Added to wishlist":"Removed from wishlist")}
   else if(t.dataset.unwish){store.set("wish",store.get("wish",[]).filter(x=>x!==t.dataset.unwish));render()}
   else if(t.dataset.share)share(BYID[t.dataset.share]);
-  else if(t.dataset.web)webApp(BYID[t.dataset.web]);
   else if(t.dataset.shot){const id=(location.hash.match(/#\/app\/([^/]+)/)||[])[1];lightbox(BYID[id],Number(t.dataset.shot))}
   else if(t.dataset.copy)copy(t.dataset.copy,t);
   else if(t.dataset.report)report(BYID[t.dataset.report]);

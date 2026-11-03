@@ -73,7 +73,6 @@
       "ads": false,
       "inAppPurchases": false,
       "contentRating": "Everyone",
-      "downloads": null,
       "languages": [
         "English",
         "हिंदी",
@@ -233,7 +232,8 @@
           ]
         }
       ],
-      "reviews": []
+      "reviews": [],
+      "baseDownloads": 0
     }
   ]
 }

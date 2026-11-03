@@ -264,7 +264,6 @@ footer a:hover{color:var(--link)}
 </div></footer>
 
 <!-- Netlify registers these forms at deploy time; the page posts to them with fetch -->
-<form name="download" data-netlify="true" hidden><input name="app"><input name="version"></form>
 <form name="review" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="rating"><input name="name"><textarea name="review"></textarea><input name="bot-field"></form>
 <form name="report" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="reason"><textarea name="details"></textarea><input name="contact"><input name="bot-field"></form>
 <form name="subscribe" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="contact"><input name="bot-field"></form>
@@ -310,7 +309,13 @@ $("#themeBtn").addEventListener("click",()=>{const t=isDark()?"light":"dark";roo
 paintTheme();
 
 /* ---------- data ---------- */
-let D=null, APPS=[], BYID={};
+let D=null, APPS=[], BYID={}, COUNTS=null;
+/* Download totals: live count from /api/downloads plus any baseDownloads set in apps.json */
+const total=a=>COUNTS?Number(a.baseDownloads||0)+Number(COUNTS[a.id]||0):null;
+function bucket(n){if(n==null)return null;if(n<1)return"New";const steps=[1,5,10,50,100,500,1e3,5e3,1e4,5e4,1e5,5e5,1e6,5e6,1e7];let b=1;for(const s of steps)if(n>=s)b=s;
+  const f=x=>x>=1e6?(x/1e6)+"M":x>=1e3?(x/1e3)+"K":String(x);return f(b)+"+"}
+const fmtN=n=>Number(n).toLocaleString("en-IN");
+function loadCounts(){return fetch("api/downloads",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(c=>{if(c&&typeof c==="object"&&!Array.isArray(c)){COUNTS=c;return true}}).catch(()=>false)}
 const catOf=id=>D.categories.find(c=>c.id===id)||{id,name:id,emoji:"•"};
 function rating(a){const r=a.reviews||[];if(!r.length)return null;const avg=r.reduce((s,x)=>s+Number(x.rating||0),0)/r.length;return{avg:Math.round(avg*10)/10,n:r.length}}
 function libState(a){const lib=store.get("lib",{}),me=lib[a.id];if(!me)return null;return{...me,update:Number(me.code||0)<Number(a.versionCode||0)}}
@@ -321,7 +326,7 @@ function appURL(a){return location.origin+location.pathname+"#/app/"+a.id}
 function tile(a){
   const r=rating(a), c=catOf(a.category);
   return `<a class="card tile" href="#/app/${esc(a.id)}"><img src="${esc(a.icon)}" alt="" width="68" height="68" loading="lazy"><div style="min-width:0"><b>${esc(a.name)}</b>
-  <div class="meta num"><span>${esc(c.name)}</span>${r?`<span>${r.avg} <span class="stars-s">★</span></span>`:""}<span>${esc(a.size)}</span>${a.price&&a.price!=="Free"?`<span>${esc(a.price)}</span>`:""}</div>
+  <div class="meta num"><span>${esc(c.name)}</span>${r?`<span>${r.avg} <span class="stars-s">★</span></span>`:""}${total(a)!=null?`<span>${bucket(total(a))}${total(a)>0?" downloads":""}</span>`:""}<span>${esc(a.size)}</span>${a.price&&a.price!=="Free"?`<span>${esc(a.price)}</span>`:""}</div>
   <p>${esc(a.tagline)}</p></div></a>`;
 }
 function catTile(c,n){
@@ -413,7 +418,7 @@ function vApp(id){
   const instLabel=s?(s.update?"Update":"Download again"):"Install";
   const stats=[
     r?`<div class="stat"><b>${r.avg} ★</b><span>${r.n} ${r.n>1?"reviews":"review"}</span></div>`:"",
-    a.downloads?`<div class="stat"><b>${esc(a.downloads)}</b><span>Downloads</span></div>`:"",
+    total(a)!=null?`<div class="stat" id="dlStat"><b>${bucket(total(a))}</b><span>Downloads</span></div>`:"",
     `<div class="stat"><b>${esc(a.size)}</b><span>Download</span></div>`,
     `<div class="stat"><b>${esc(a.contentRating||"Everyone")}</b><span>Rated for</span></div>`,
     `<div class="stat"><b>${esc(a.price||"Free")}</b><span>${a.ads===false?"No ads":"Contains ads"}</span></div>`
@@ -464,6 +469,7 @@ function vApp(id){
         <div><dt>Requires</dt><dd>Android ${esc(a.minAndroid)} or later</dd></div>
         <div><dt>Languages</dt><dd>${esc((a.languages||[]).join(", "))}</dd></div>
         <div><dt>Permissions</dt><dd>${esc((a.permissions||[]).join(", "))}</dd></div>
+        ${total(a)!=null?`<div><dt>Total downloads</dt><dd id="dlExact">${fmtN(total(a))}</dd></div>`:""}
         <div><dt>Offered by</dt><dd>${esc(D.store.developer)}</dd></div>
       </dl></div>
     </aside>
@@ -527,7 +533,7 @@ function pubBuild(){
   const today=new Date().toISOString().slice(0,10);
   const o={id,name:v("name"),tagline:v("tagline"),category:v("category"),tags:[],icon:base+"icon.png",color:v("color"),apk:base+(v("apkFile")||"app.apk"),
     version:v("version"),versionCode:Number(v("versionCode"))||1,updated:today,released:today,size:v("size"),minAndroid:v("minAndroid"),price:v("price")||"Free",
-    ads:f.elements.ads.checked,inAppPurchases:f.elements.iap.checked,contentRating:"Everyone",downloads:null,
+    ads:f.elements.ads.checked,inAppPurchases:f.elements.iap.checked,contentRating:"Everyone",baseDownloads:0,
     languages:v("languages").split(",").map(s=>s.trim()).filter(Boolean),permissions:v("permissions").split(",").map(s=>s.trim()).filter(Boolean),
     website:v("website"),privacy:base+"privacy.html",shareText:`${v("name")}: ${v("tagline")}`,screenshots:shots,about:v("about"),
     features:v("features").split("\n").filter(l=>l.includes(":")).map(l=>{const i=l.indexOf(":");return{title:l.slice(0,i).trim(),points:l.slice(i+1).split(";").map(s=>s.trim()).filter(Boolean)}}),
@@ -586,7 +592,8 @@ function lightbox(a,i){
 /* ---------- actions ---------- */
 function install(a){
   const lib=store.get("lib",{});lib[a.id]={version:a.version,code:a.versionCode,at:new Date().toISOString()};store.set("lib",lib);
-  try{post("download",{app:a.id,version:a.version}).catch(()=>{})}catch(e){}
+  try{fetch("api/downloads",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({app:a.id})}).then(r=>r.ok?r.json():null).then(d=>{
+    if(!d||!d.counts)return;COUNTS=d.counts;const st=$("#dlStat b"),ex=$("#dlExact");if(st)st.textContent=bucket(total(a));if(ex)ex.textContent=fmtN(total(a))}).catch(()=>{})}catch(e){}
   const link=document.createElement("a");link.href=a.apk;link.download=a.apk.split("/").pop();document.body.appendChild(link);link.click();link.remove();
   paintUpd();
   const desktop=!isPhone;
@@ -644,7 +651,7 @@ document.addEventListener("click",e=>{
 });
 
 /* ---------- router ---------- */
-function render(){
+function render(keep){
   const h=decodeURIComponent(location.hash.replace(/^#\/?/,""));const [p,arg]=[h.split("/")[0],h.split("/").slice(1).join("/")];
   const V=$("#view");
   V.innerHTML= p==="app"?vApp(arg): p==="categories"?vCategories(): p==="category"?vCategory(arg): p==="new"?vNew(): p==="library"?vLibrary():
@@ -661,7 +668,7 @@ function render(){
       catch(err){out.textContent="Couldn't send. Check your internet and try again.";out.hidden=false}finally{btn.disabled=false}});
   }
   if(p==="publish"){$("#pubForm").addEventListener("input",pubBuild);pubBuild()}
-  window.scrollTo(0,0);
+  if(!keep)window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",()=>{render();$("#view").focus({preventScroll:true})});
 
@@ -670,6 +677,7 @@ fetch("apps.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}
   D=d;APPS=d.apps||[];BYID=Object.fromEntries(APPS.map(a=>[a.id,a]));
   $("#storeName").textContent=d.store.name;$("#footName").textContent=`${d.store.name} · Made in ${d.store.city}`;
   render();paintUpd();
+  loadCounts().then(ok=>{if(ok)render(true)});
 }).catch(()=>{$("#view").innerHTML=`<div class="card empty"><b>The store couldn't load</b>Check your internet connection and refresh the page.</div>`});
 
 if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}

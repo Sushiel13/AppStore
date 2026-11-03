@@ -63,8 +63,8 @@
       "icon": "apps/house-help-tracker/icon.png",
       "color": "#13235b",
       "apk": "apps/house-help-tracker/HouseHelpTracker.apk",
-      "version": "1.21",
-      "versionCode": 22,
+      "version": "1.22",
+      "versionCode": 23,
       "updated": "2026-11-03",
       "released": "2026-10-19",
       "size": "4.6 MB",
@@ -187,6 +187,14 @@
         }
       ],
       "changelog": [
+        {
+          "version": "1.22",
+          "date": "2026-11-03",
+          "notes": [
+            "Free trial is now 45 days: every feature is free for 45 days from when you first used version 1.21 or later. After that, one house help with attendance and pay stays free, and Pro (₹49 a month or ₹399 a year) unlocks everything.",
+            "Send feedback and Share the app in Settings now open the app's page on appbucket.in."
+          ]
+        },
         {
           "version": "1.21",
           "date": "2026-11-03",

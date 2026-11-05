@@ -312,7 +312,7 @@ paintTheme();
 let D=null, APPS=[], BYID={}, COUNTS=null;
 /* Download totals: live count from /api/downloads plus any baseDownloads set in apps.json */
 const total=a=>COUNTS?Number(a.baseDownloads||0)+Number(COUNTS[a.id]||0):null;
-function bucket(n){if(n==null)return null;if(n<1)return"New";const steps=[1,5,10,50,100,500,1e3,5e3,1e4,5e4,1e5,5e5,1e6,5e6,1e7];let b=1;for(const s of steps)if(n>=s)b=s;
+function bucket(n){if(n==null)return null;if(n<1)return"New";if(n<100)return String(n);const steps=[1,5,10,50,100,500,1e3,5e3,1e4,5e4,1e5,5e5,1e6,5e6,1e7];let b=1;for(const s of steps)if(n>=s)b=s;
   const f=x=>x>=1e6?(x/1e6)+"M":x>=1e3?(x/1e3)+"K":String(x);return f(b)+"+"}
 const fmtN=n=>Number(n).toLocaleString("en-IN");
 function loadCounts(){return fetch("api/downloads",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(c=>{if(c&&typeof c==="object"&&!Array.isArray(c)){COUNTS=c;return true}}).catch(()=>false)}
@@ -326,7 +326,7 @@ function appURL(a){return location.origin+location.pathname+"#/app/"+a.id}
 function tile(a){
   const r=rating(a), c=catOf(a.category);
   return `<a class="card tile" href="#/app/${esc(a.id)}"><img src="${esc(a.icon)}" alt="" width="68" height="68" loading="lazy"><div style="min-width:0"><b>${esc(a.name)}</b>
-  <div class="meta num"><span>${esc(c.name)}</span>${r?`<span>${r.avg} <span class="stars-s">★</span></span>`:""}${total(a)!=null?`<span>${bucket(total(a))}${total(a)>0?" downloads":""}</span>`:""}<span>${esc(a.size)}</span>${a.price&&a.price!=="Free"?`<span>${esc(a.price)}</span>`:""}</div>
+  <div class="meta num"><span>${esc(c.name)}</span>${r?`<span>${r.avg} <span class="stars-s">★</span></span>`:""}${total(a)!=null?`<span>${bucket(total(a))}${total(a)>0?(total(a)===1?" download":" downloads"):""}</span>`:""}<span>${esc(a.size)}</span>${a.price&&a.price!=="Free"?`<span>${esc(a.price)}</span>`:""}</div>
   <p>${esc(a.tagline)}</p></div></a>`;
 }
 function catTile(c,n){

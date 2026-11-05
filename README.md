@@ -23,7 +23,7 @@ My own Android app store website. It lists my apps with screenshots, details, re
 
 ## Download counts
 
-Every tap on **Install** is counted by a small Netlify Function (`netlify/functions/downloads.mjs`) and stored in Netlify Blobs. The store shows the total like Google Play ("50+ downloads") and the exact number under **App info → Total downloads**.
+Every tap on **Install** is counted by a small Netlify Function (`netlify/functions/downloads.mjs`) and stored in Netlify Blobs. The store shows the exact total everywhere (e.g. "2 downloads", "1,250 downloads"), including **App info → Total downloads**.
 
 - The same person downloading the same app more than once on the same day counts once.
 - See the exact totals any time at `https://<your-site>/api/downloads`.

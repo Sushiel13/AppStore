@@ -312,8 +312,7 @@ paintTheme();
 let D=null, APPS=[], BYID={}, COUNTS=null;
 /* Download totals: live count from /api/downloads plus any baseDownloads set in apps.json */
 const total=a=>COUNTS?Number(a.baseDownloads||0)+Number(COUNTS[a.id]||0):null;
-function bucket(n){if(n==null)return null;if(n<1)return"New";if(n<100)return String(n);const steps=[1,5,10,50,100,500,1e3,5e3,1e4,5e4,1e5,5e5,1e6,5e6,1e7];let b=1;for(const s of steps)if(n>=s)b=s;
-  const f=x=>x>=1e6?(x/1e6)+"M":x>=1e3?(x/1e3)+"K":String(x);return f(b)+"+"}
+function bucket(n){if(n==null)return null;if(n<1)return"New";return Number(n).toLocaleString("en-IN")}
 const fmtN=n=>Number(n).toLocaleString("en-IN");
 function loadCounts(){return fetch("api/downloads",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(c=>{if(c&&typeof c==="object"&&!Array.isArray(c)){COUNTS=c;return true}}).catch(()=>false)}
 const catOf=id=>D.categories.find(c=>c.id===id)||{id,name:id,emoji:"•"};

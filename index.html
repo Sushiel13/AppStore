@@ -255,7 +255,7 @@ footer a:hover{color:var(--link)}
 <main class="w" id="view" tabindex="-1" aria-live="polite"></main>
 
 <footer><div class="w">
-  <span id="footName">AppBucket · Made in Pune</span>
+  <span><span id="footName">AppBucket · Made in Pune</span><span id="visitors" hidden> · <b id="visN" class="num"></b> unique visitors</span></span>
   <nav aria-label="Footer">
     <a href="#/developer">About the developer</a>
     <a href="#/help">Help: installing apps</a>
@@ -633,6 +633,16 @@ function notify(a){
     try{const r=await post("subscribe",{app:a.id,contact:f.contact.value,"bot-field":f["bot-field"].value});if(!r.ok)throw 0;close();toast("Done. You'll hear about updates.")}
     catch(err){out.textContent="Couldn't send. Check your internet and try again.";out.hidden=false}});
 }
+/* Unique visitors: each browser is counted once, using a random id kept in this browser */
+function countVisitor(){
+  let vid=store.get("vid",null),known=!!vid;
+  if(!vid){const r=new Uint8Array(18);try{crypto.getRandomValues(r)}catch(e){for(let i=0;i<18;i++)r[i]=Math.random()*256}
+    vid=btoa(String.fromCharCode(...r)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");store.set("vid",vid)}
+  const show=n=>{if(typeof n!=="number"||n<1)return;$("#visN").textContent=n.toLocaleString("en-IN");$("#visitors").hidden=false};
+  const req=store.get("vcounted",false)&&known?fetch("api/visitors",{cache:"no-store"})
+    :fetch("api/visitors",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({vid})});
+  req.then(r=>r.ok?r.json():Promise.reject()).then(d=>{store.set("vcounted",true);show(d.visitors)}).catch(()=>{});
+}
 function paintUpd(){$("#updDot").hidden=!updatesCount()}
 
 document.addEventListener("click",e=>{
@@ -677,6 +687,7 @@ fetch("apps.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}
   $("#storeName").textContent=d.store.name;$("#footName").textContent=`${d.store.name} · Made in ${d.store.city}`;
   render();paintUpd();
   loadCounts().then(ok=>{if(ok)render(true)});
+  countVisitor();
 }).catch(()=>{$("#view").innerHTML=`<div class="card empty"><b>The store couldn't load</b>Check your internet connection and refresh the page.</div>`});
 
 if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}

@@ -63,9 +63,9 @@
       "icon": "apps/house-help-tracker/icon.png",
       "color": "#13235b",
       "apk": "apps/house-help-tracker/HouseHelpTracker.apk",
-      "version": "1.22",
-      "versionCode": 23,
-      "updated": "2026-11-03",
+      "version": "1.23",
+      "versionCode": 24,
+      "updated": "2026-11-11",
       "released": "2026-10-19",
       "size": "4.6 MB",
       "minAndroid": "8.0",
@@ -187,6 +187,14 @@
         }
       ],
       "changelog": [
+        {
+          "version": "1.23",
+          "date": "2026-11-11",
+          "notes": [
+            "Paid leave: give your cook, maid or any house help a full day or half day of paid leave. Tap a day → More → Paid leave or Paid half day, and add the reason. No money is cut for it.",
+            "The reason shows in the month's leave log, and paid leave days are listed on the pay slip."
+          ]
+        },
         {
           "version": "1.22",
           "date": "2026-11-03",

@@ -63,8 +63,8 @@
       "icon": "apps/house-help-tracker/icon.png",
       "color": "#13235b",
       "apk": "apps/house-help-tracker/HouseHelpTracker.apk",
-      "version": "1.24",
-      "versionCode": 25,
+      "version": "1.25",
+      "versionCode": 26,
       "updated": "2026-11-11",
       "released": "2026-10-19",
       "size": "4.6 MB",
@@ -187,6 +187,16 @@
         }
       ],
       "changelog": [
+        {
+          "version": "1.25",
+          "date": "2026-11-11",
+          "notes": [
+            "Easier to tap: the month arrows, Pay, Give advance, Copy, category chips and other small buttons now have a bigger touch area.",
+            "Hindi and Marathi: \"Weekly off\" no longer shows the same word as Leave or Holiday in the calendar key and totals.",
+            "Small phones: the three totals on Home and Expiry stay in one neat row, the month name no longer wraps, and long names on the Payments page stay within two lines.",
+            "Safer records: a damaged advance entry from an old backup can no longer stop a person's page from opening."
+          ]
+        },
         {
           "version": "1.24",
           "date": "2026-11-11",

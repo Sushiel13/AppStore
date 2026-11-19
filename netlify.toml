@@ -1,8 +1,0 @@
-# The site is plain files: no build step. Netlify bundles netlify/functions automatically.
-[build]
-  publish = "."
-  command = ""
-
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"

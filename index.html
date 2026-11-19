@@ -263,10 +263,6 @@ footer a:hover{color:var(--link)}
   </nav>
 </div></footer>
 
-<!-- Netlify registers these forms at deploy time; the page posts to them with fetch -->
-<form name="review" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="rating"><input name="name"><textarea name="review"></textarea><input name="bot-field"></form>
-<form name="report" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="reason"><textarea name="details"></textarea><input name="contact"><input name="bot-field"></form>
-<form name="subscribe" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="app"><input name="contact"><input name="bot-field"></form>
 
 <script src="vendor/qrcode.js"></script>
 <script>
@@ -278,7 +274,9 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const fdate=s=>{if(!s)return"";const[y,m,d]=s.split("-").map(Number);return `${d} ${MON[m-1]} ${y}`};
 const store={get(k,d){try{const v=localStorage.getItem("sa."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("sa."+k,JSON.stringify(v))}catch(e){}}};
-const post=(name,fields)=>fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({"form-name":name,...fields}).toString()});
+/* API (download/visitor counts, forms) runs on a Cloudflare Worker; its address is "api" in apps.json */
+const api=p=>((typeof D!=="undefined"&&D&&D.store&&D.store.api)?String(D.store.api).replace(/\/+$/,"")+"/api/":"api/")+p;
+const post=(name,fields)=>fetch(api("forms"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({form:name,...fields})});
 const isPhone=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
 const isAndroid=/Android/i.test(navigator.userAgent);
 function toast(t){const el=document.createElement("div");el.className="toast";el.setAttribute("role","status");el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),2600)}
@@ -310,11 +308,11 @@ paintTheme();
 
 /* ---------- data ---------- */
 let D=null, APPS=[], BYID={}, COUNTS=null;
-/* Download totals: live count from /api/downloads plus any baseDownloads set in apps.json */
+/* Download totals: live count from the API plus any baseDownloads set in apps.json */
 const total=a=>COUNTS?Number(a.baseDownloads||0)+Number(COUNTS[a.id]||0):null;
 function bucket(n){if(n==null)return null;if(n<1)return"New";return Number(n).toLocaleString("en-IN")}
 const fmtN=n=>Number(n).toLocaleString("en-IN");
-function loadCounts(){return fetch("api/downloads",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(c=>{if(c&&typeof c==="object"&&!Array.isArray(c)){COUNTS=c;return true}}).catch(()=>false)}
+function loadCounts(){return fetch(api("downloads"),{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(c=>{if(c&&typeof c==="object"&&!Array.isArray(c)){COUNTS=c;return true}}).catch(()=>false)}
 const catOf=id=>D.categories.find(c=>c.id===id)||{id,name:id,emoji:"•"};
 function rating(a){const r=a.reviews||[];if(!r.length)return null;const avg=r.reduce((s,x)=>s+Number(x.rating||0),0)/r.length;return{avg:Math.round(avg*10)/10,n:r.length}}
 function libState(a){const lib=store.get("lib",{}),me=lib[a.id];if(!me)return null;return{...me,update:Number(me.code||0)<Number(a.versionCode||0)}}
@@ -500,7 +498,7 @@ function vPublish(){
   const cats=D.categories.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
   return `<section class="sec prose" style="max-width:none">
   <h1 style="font-size:28px;font-weight:800">Publish an app</h1>
-  <p class="muted" style="max-width:68ch">For the store owner. Fill this in, then copy the result into <b>apps.json</b>. Put the app's files in <b>apps/&lt;app-id&gt;/</b> and upload the whole store folder to Netlify again.</p>
+  <p class="muted" style="max-width:68ch">For the store owner. Fill this in, then copy the result into <b>apps.json</b>. Put the app's files in <b>apps/&lt;app-id&gt;/</b> and push to GitHub; the site updates by itself.</p>
   <div class="cols" style="margin-top:18px">
   <form class="card form" id="pubForm">
     <div class="two"><label class="fl">App name<input name="name" required placeholder="Nudge"></label><label class="fl">App id (for the link)<input name="id" required placeholder="nudge" pattern="[a-z0-9-]+"></label></div>
@@ -589,7 +587,7 @@ function lightbox(a,i){
 /* ---------- actions ---------- */
 function install(a){
   const lib=store.get("lib",{});lib[a.id]={version:a.version,code:a.versionCode,at:new Date().toISOString()};store.set("lib",lib);
-  try{fetch("api/downloads",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({app:a.id})}).then(r=>r.ok?r.json():null).then(d=>{
+  try{fetch(api("downloads"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({app:a.id})}).then(r=>r.ok?r.json():null).then(d=>{
     if(!d||!d.counts)return;COUNTS=d.counts;const st=$("#dlStat b"),ex=$("#dlExact");if(st)st.textContent=bucket(total(a));if(ex)ex.textContent=fmtN(total(a))}).catch(()=>{})}catch(e){}
   const link=document.createElement("a");link.href=a.apk;link.download=a.apk.split("/").pop();document.body.appendChild(link);link.click();link.remove();
   paintUpd();
@@ -637,8 +635,8 @@ function countVisitor(){
   if(!vid){const r=new Uint8Array(18);try{crypto.getRandomValues(r)}catch(e){for(let i=0;i<18;i++)r[i]=Math.random()*256}
     vid=btoa(String.fromCharCode(...r)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");store.set("vid",vid)}
   const show=n=>{if(typeof n!=="number"||n<1)return;$("#visN").textContent=n.toLocaleString("en-IN");$("#visitors").hidden=false};
-  const req=store.get("vcounted",false)&&known?fetch("api/visitors",{cache:"no-store"})
-    :fetch("api/visitors",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({vid})});
+  const req=store.get("vcounted",false)&&known?fetch(api("visitors"),{cache:"no-store"})
+    :fetch(api("visitors"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({vid})});
   req.then(r=>r.ok?r.json():Promise.reject()).then(d=>{store.set("vcounted",true);show(d.visitors)}).catch(()=>{});
 }
 function paintUpd(){$("#updDot").hidden=!updatesCount()}

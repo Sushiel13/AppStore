@@ -1,8 +1,0 @@
-/*.apk
-  Content-Type: application/vnd.android.package-archive
-  Content-Disposition: attachment
-/apps.json
-  Cache-Control: no-cache
-/owner/*
-  X-Robots-Tag: noindex, nofollow
-  Cache-Control: no-store

@@ -4,7 +4,8 @@
     "tagline": "Simple, private apps for Indian homes",
     "developer": "AppBucket",
     "email": "sushiel.p@gmail.com",
-    "city": "Pune"
+    "city": "Pune",
+    "api": ""
   },
   "categories": [
     {

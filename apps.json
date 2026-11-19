@@ -64,9 +64,9 @@
       "icon": "apps/house-help-tracker/icon.png",
       "color": "#13235b",
       "apk": "apps/house-help-tracker/HouseHelpTracker.apk",
-      "version": "1.26",
-      "versionCode": 27,
-      "updated": "2026-11-16",
+      "version": "1.27",
+      "versionCode": 28,
+      "updated": "2026-11-19",
       "released": "2026-10-19",
       "size": "4.6 MB",
       "minAndroid": "8.0",
@@ -189,6 +189,16 @@
       ],
       "changelog": [
         {
+          "version": "1.27",
+          "date": "2026-11-19",
+          "notes": [
+            "Extra work: note when your house help does more than usual, such as cooking for guests, a party or function, extra cleaning or extra hours. Pick the dates (for example 8 to 19 November), how many extra people, and how you pay: per extra person per day, per day, a fixed amount, or no extra pay (just a note).",
+            "The extra pay is worked out for you (for example 3 people × 12 days × ₹50 = ₹1,800) and added to that month's pay.",
+            "It shows on the person's page, as a green + on those days in the calendar, on the pay slip (message and picture) and in the monthly report.",
+            "Optionally send a thank-you message saying the amount is added to their pay, in English, Hindi or Marathi."
+          ]
+        },
+        {
           "version": "1.26",
           "date": "2026-11-16",
           "notes": [
@@ -278,13 +288,6 @@
           "date": "2026-11-02",
           "notes": [
             "Monthly report for all house help, ready to send on WhatsApp."
-          ]
-        },
-        {
-          "version": "1.15",
-          "date": "2026-11-02",
-          "notes": [
-            "Expiry alerts on WhatsApp for up to 3 numbers."
           ]
         }
       ],

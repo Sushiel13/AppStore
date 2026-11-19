@@ -55,13 +55,6 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;p
   <div class="scroll"><table><thead><tr><th>Made</th><th>Phone ID</th><th>Plan</th><th>Until</th></tr></thead><tbody id="log"></tbody></table></div>
   <button class="ghost" id="forget" type="button">Remove the key from this browser</button>
  </section>
- <section class="card" id="msgCard">
-  <h2>Reviews, reports and sign-ups</h2>
-  <p class="muted">Messages people send from AppBucket. Enter your owner key (the OWNER_KEY you saved in GitHub) once on this phone.</p>
-  <div class="two"><label>Owner key<input id="okey" type="password" autocomplete="off"></label><button class="go" id="mload" type="button" style="align-self:end">Show messages</button></div>
-  <p id="mmsg" class="muted" role="status"></p>
-  <div id="mlist" style="display:grid;gap:10px"></div>
- </section>
 </main>
 <script>
 (function(){"use strict";
@@ -94,24 +87,6 @@ $("#make").onclick=async()=>{const err=$("#mkErr");err.hidden=true;
 function drawLog(){const log=st.get("log",[]);$("#log").innerHTML=log.length?log.map(r=>`<tr><td>${r.on}</td><td>${r.dev}</td><td>${NAME[r.plan]}</td><td>${r.until}</td></tr>`).join(""):'<tr><td colspan="4" class="muted">None yet.</td></tr>'}
 $("#forget").onclick=()=>{try{localStorage.removeItem("hhpro.key")}catch(e){}location.reload()};
 (async()=>{const k=st.get("key",null);if(k){try{await loadKey(k);showReady()}catch(e){}}})();
-})();
-</script>
-<script>
-/* Messages from the AppBucket API (Cloudflare Worker); its address is "api" in apps.json */
-(function(){"use strict";
-const $=s=>document.querySelector(s),esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const K="hhpro.ownerKey";let base=null;
-const getBase=()=>base?Promise.resolve(base):fetch("../apps.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{if(!d.store||!d.store.api)throw new Error("noapi");base=String(d.store.api).replace(/\/+$/,"");return base});
-const call=(path,opt={})=>getBase().then(b=>fetch(b+path,{...opt,headers:{Authorization:"Bearer "+$("#okey").value.trim()}})).then(r=>{if(r.status===401)throw new Error("key");if(!r.ok)throw new Error("net");return r.json()});
-const label={review:"⭐ Review",report:"⚠️ Problem report",subscribe:"🔔 Update sign-up"};
-function draw(list){$("#mmsg").textContent=list.length?`${list.length} message${list.length===1?"":"s"}, newest first.`:"No messages yet.";
- $("#mlist").innerHTML=list.map(m=>{const rows=Object.entries(m).filter(([k])=>!["id","form","at"].includes(k)&&m[k]).map(([k,v])=>`<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join("");
-  return `<div class="card" style="padding:12px;gap:6px"><div><b>${label[m.form]||esc(m.form)}</b> <span class="muted">· ${new Date(m.at).toLocaleString("en-IN")}</span></div>${rows}<button class="ghost" data-del="${esc(m.id)}" type="button">Delete</button></div>`}).join("")}
-function load(){try{localStorage.setItem(K,$("#okey").value.trim())}catch(e){}$("#mmsg").textContent="Loading…";
- call("/api/messages").then(draw).catch(e=>{$("#mmsg").textContent=e.message==="key"?"Wrong owner key.":e.message==="noapi"?"The API address isn't set in apps.json yet.":"Couldn't load. Check your internet."})}
-$("#mload").onclick=load;
-$("#mlist").onclick=e=>{const id=e.target.dataset&&e.target.dataset.del;if(!id||!confirm("Delete this message? It can't be undone."))return;call("/api/messages/"+id,{method:"DELETE"}).then(load).catch(()=>alert("Couldn't delete."))};
-try{const k=localStorage.getItem(K);if(k){$("#okey").value=k;load()}}catch(e){}
 })();
 </script>
 </body></html>

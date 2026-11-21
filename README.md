@@ -17,10 +17,10 @@ An Android app that blocks ads, trackers and analytics across **all apps and bro
 - Android 7.0+ (minSdk 24), built for Android 14 (targetSdk 34)
 
 ## Build (GitHub Actions)
-Every push to `main` runs `.github/workflows/build-apk.yml`:
+Every push to the `adshield-src` branch of Sushiel13/AppStore runs `.github/workflows/build-apk.yml`:
 1. Installs JDK 17, the Android SDK and Gradle 8.9
 2. Builds the APK
-3. Uploads it as a workflow artifact **and** publishes a GitHub Release `v1.0.<run>` with the APK attached. That release is your download link.
+3. Copies the APK to `apps/adshield/AdShield.apk` on the store's `main` branch and updates the version and size in `apps.json`. GitHub Pages then publishes it on appbucket.in.
 
 You can also run it by hand from **Actions → Build AdShield APK → Run workflow**.
 

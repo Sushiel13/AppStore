@@ -77,7 +77,7 @@ jobs:
                   a["updated"] = datetime.date.today().isoformat()
                   if a.get("changelog"):
                       a["changelog"][0]["version"] = a["version"]
-          json.dump(d, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+          json.dump(d, open(path, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
           open(path, "a").write("\n")
           PY
 

@@ -15,9 +15,24 @@ android {
         versionName = "1.0.${System.getenv("GITHUB_RUN_NUMBER") ?: "0"}"
     }
 
+    val ksPath = System.getenv("ADSHIELD_KEYSTORE")
+    signingConfigs {
+        if (ksPath != null) {
+            create("appbucket") {
+                storeFile = file(ksPath)
+                storePassword = System.getenv("ADSHIELD_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("ADSHIELD_KEY_ALIAS")
+                keyPassword = System.getenv("ADSHIELD_KEYSTORE_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            // Signed with the AppBucket key when the secrets are set, else the debug key.
+            signingConfig = if (ksPath != null) signingConfigs.getByName("appbucket")
+                            else signingConfigs.getByName("debug")
         }
     }
     compileOptions {

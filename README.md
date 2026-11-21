@@ -44,3 +44,14 @@ app/src/main/assets/blocklist.txt   starter blocklist
 
 ## Play Store note
 Google Play restricts ad blockers that interfere with other apps' ads. Distribute it as an APK (for example on AppBucket) or through F-Droid.
+
+## Signing (do this before the second release)
+Android only installs an update over an older version if both are signed with the same key. Add these repository secrets in **Settings → Secrets and variables → Actions**:
+- `ADSHIELD_KEYSTORE_B64`: your keystore file, base64-encoded (`base64 -w0 adshield.jks`)
+- `ADSHIELD_KEYSTORE_PASSWORD`: its password (used for the key too)
+- `ADSHIELD_KEY_ALIAS`: the key alias
+
+Make the keystore once with:
+`keytool -genkeypair -keystore adshield.jks -alias adshield -keyalg RSA -keysize 2048 -validity 10000`
+
+Until the secrets exist, builds use a temporary debug key, so people who installed one of those builds must uninstall it before installing a later version.

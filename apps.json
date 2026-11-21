@@ -292,6 +292,111 @@
       ],
       "reviews": [],
       "baseDownloads": 0
+    },
+    {
+      "id": "adshield",
+      "name": "AdShield",
+      "tagline": "Block ads and trackers in every app and browser. No server, no sign-up.",
+      "category": "tools",
+      "tags": [
+        "ad blocker",
+        "adblock",
+        "tracker",
+        "privacy",
+        "dns",
+        "vpn",
+        "block ads",
+        "no ads"
+      ],
+      "icon": "apps/adshield/icon.png",
+      "color": "#0F1420",
+      "apk": "apps/adshield/AdShield.apk",
+      "version": "1.0.2",
+      "versionCode": 2,
+      "updated": "2026-11-21",
+      "released": "2026-11-21",
+      "size": "4.4 MB",
+      "minAndroid": "7.0",
+      "price": "Free",
+      "ads": false,
+      "inAppPurchases": false,
+      "contentRating": "Everyone",
+      "languages": [
+        "English"
+      ],
+      "permissions": [
+        "VPN (local, to filter ad and tracker lookups)",
+        "Notifications",
+        "Internet"
+      ],
+      "website": "",
+      "privacy": "apps/adshield/privacy.html",
+      "shareText": "AdShield: free ad and tracker blocker for Android. Works in every app and browser, no server or sign-up.",
+      "screenshots": [],
+      "about": "AdShield blocks ads, trackers and analytics across your whole phone, in apps and browsers, on Wi-Fi and mobile data. It uses Android's VPN feature locally, so there's no VPN server and your browsing isn't sent anywhere. Tap the shield once and it keeps working in the background.",
+      "features": [
+        {
+          "title": "Blocks ads everywhere",
+          "points": [
+            "Works in every app and browser",
+            "Wi-Fi and mobile data",
+            "Starts with one tap and keeps running"
+          ]
+        },
+        {
+          "title": "Big, up-to-date blocklist",
+          "points": [
+            "Starter list built in",
+            "Update list downloads about 150,000 ad and tracker domains",
+            "Blocks sub-domains too"
+          ]
+        },
+        {
+          "title": "You stay in control",
+          "points": [
+            "See what was blocked, live",
+            "Tap a domain to allow it if a site breaks",
+            "Stop it any time from the notification"
+          ]
+        },
+        {
+          "title": "Private and light",
+          "points": [
+            "No server, no account, no sign-up",
+            "Only website-name lookups are checked",
+            "Barely affects speed or battery"
+          ]
+        }
+      ],
+      "dataSafety": [
+        {
+          "icon": "phone",
+          "title": "Filtering happens on your phone",
+          "text": "AdShield checks website names on the device. Your traffic isn't sent to any VPN server."
+        },
+        {
+          "icon": "noads",
+          "title": "No ads, no tracking",
+          "text": "The app has no ads and no analytics."
+        },
+        {
+          "icon": "info",
+          "title": "Normal DNS for allowed sites",
+          "text": "Names that aren't blocked are looked up with Cloudflare (1.1.1.1) or Google (8.8.8.8) public DNS, as your phone normally would."
+        }
+      ],
+      "changelog": [
+        {
+          "version": "1.0.2",
+          "date": "2026-11-21",
+          "notes": [
+            "First release: block ads and trackers in every app, live blocked list, allowlist and blocklist updates.",
+            "Tip: for full blocking, set Private DNS to Off or Automatic, and turn off Use secure DNS in Chrome."
+          ]
+        }
+      ],
+      "reviews": [],
+      "baseDownloads": 0
     }
   ]
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AdShield Privacy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: single readable column, navy app band on top */
+:root{--bg:#f2f5fb;--surface:#ffffff;--ink:#0f1a3c;--muted:#5d6782;--line:#e3e8f1;--navy:#13235b;--sky:#2477c9;
+  --f:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1126;--surface:#121a36;--ink:#e6ebf7;--muted:#a3adc7;--line:#26304f;--navy:#13235b;--sky:#5cc8fa;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1126;--surface:#121a36;--ink:#e6ebf7;--muted:#a3adc7;--line:#26304f;--navy:#13235b;--sky:#5cc8fa;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.6}
+.band{background:var(--navy);color:#fff}
+.w{max-width:680px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band .w{padding-block:36px 32px}
+.k{color:#7dd3fc;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{margin:6px 0 4px;font-size:30px;line-height:1.2;text-wrap:balance}
+.band p{margin:0;color:#c9d6f5;font-size:14px}
+main.w{padding-block:28px 48px}
+h2{font-size:19px;margin:28px 0 8px;text-wrap:balance}
+p,li{max-width:65ch}
+ul{padding-left:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+a{color:var(--sky)}
+</style></head><body>
+<div class="band"><div class="w"><div class="k">AdShield</div><h1>Privacy policy</h1><p>Effective 21 November 2026</p></div></div>
+<main class="w">
+  <div class="card"><strong>In short:</strong> AdShield has no account and no server. It checks website names on your phone and blocks ad and tracker names. Nothing about your browsing is sent to us or kept.</div>
+  <h2>How AdShield works</h2>
+  <p>AdShield uses Android's VPN feature to run a small filter on your phone. Only DNS lookups, which are the names of websites and servers your apps ask for, go through it. Your other traffic is not routed through AdShield or any VPN server.</p>
+  <h2>DNS lookups</h2>
+  <p>If a name is on the blocklist, AdShield answers on your phone that the name doesn't exist, so the ad or tracker doesn't load. Other names are sent, as normal DNS lookups, to Cloudflare's public DNS (1.1.1.1), or Google Public DNS (8.8.8.8) if Cloudflare doesn't reply. Those services handle lookups under their own privacy policies, as your phone's normal DNS would.</p>
+  <h2>What the app stores</h2>
+  <ul>
+    <li>The blocklist and the domains you choose to allow, in the app's private storage on your phone</li>
+    <li>A count of lookups and blocked requests, and a list of the last 100 blocked names. These are kept in memory only and cleared when AdShield stops.</li>
+  </ul>
+  <p>AdShield doesn't keep a history of the websites you visit.</p>
+  <h2>Internet use</h2>
+  <p>Besides forwarding DNS lookups, the app connects to the internet only when you tap Update list. It then downloads the public StevenBlack hosts list from GitHub. No personal data is sent with that download.</p>
+  <h2>Analytics, ads and tracking</h2>
+  <p>The app has no ads and no analytics or tracking tools.</p>
+  <h2>Deleting your data</h2>
+  <p>Remove allowed domains in the app at any time. To delete everything, clear the app's storage in Android Settings or uninstall the app.</p>
+  <h2>Changes</h2>
+  <p>If this policy changes, the new version will be posted on this page with a new effective date.</p>
+  <h2>Contact</h2>
+  <p>Questions about this policy: <a href="mailto:sushiel.p@gmail.com">sushiel.p@gmail.com</a></p>
+</main>
+</body></html>

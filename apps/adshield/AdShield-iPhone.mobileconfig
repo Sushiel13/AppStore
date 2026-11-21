@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>DNSSettings</key>
+			<dict>
+				<key>DNSProtocol</key>
+				<string>HTTPS</string>
+				<key>ServerURL</key>
+				<string>https://dns.adguard-dns.com/dns-query</string>
+				<key>ServerAddresses</key>
+				<array>
+					<string>94.140.14.14</string>
+					<string>94.140.15.15</string>
+					<string>2a10:50c0::ad1:ff</string>
+					<string>2a10:50c0::ad2:ff</string>
+				</array>
+			</dict>
+			<key>PayloadDescription</key>
+			<string>Blocks ads and trackers using AdGuard DNS (encrypted DNS over HTTPS).</string>
+			<key>PayloadDisplayName</key>
+			<string>AdShield ad blocking DNS</string>
+			<key>PayloadIdentifier</key>
+			<string>in.appbucket.adshield.dns</string>
+			<key>PayloadType</key>
+			<string>com.apple.dnsSettings.managed</string>
+			<key>PayloadUUID</key>
+			<string>825D5E6D-4ED6-478B-9909-0CF4526BA54C</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>ProhibitDisablement</key>
+			<false/>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>AdShield for iPhone from appbucket.in. Blocks ads and trackers in every app and browser, on Wi-Fi and mobile data, using AdGuard's public ad-blocking DNS over an encrypted connection. Remove it any time in Settings, General, VPN and Device Management.</string>
+	<key>PayloadDisplayName</key>
+	<string>AdShield Ad Blocker</string>
+	<key>PayloadIdentifier</key>
+	<string>in.appbucket.adshield</string>
+	<key>PayloadOrganization</key>
+	<string>AppBucket</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>8FFFC3D6-020A-443A-893E-B35FF6D9D15A</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

@@ -296,7 +296,7 @@
     {
       "id": "adshield",
       "name": "AdShield",
-      "tagline": "Block ads and trackers in every app and browser. No server, no sign-up.",
+      "tagline": "Block ads and trackers in every app and browser. Android app, plus a free iPhone profile.",
       "category": "tools",
       "tags": [
         "ad blocker",
@@ -306,7 +306,9 @@
         "dns",
         "vpn",
         "block ads",
-        "no ads"
+        "no ads",
+        "iphone",
+        "ios"
       ],
       "icon": "apps/adshield/icon.png",
       "color": "#0F1420",
@@ -388,6 +390,13 @@
       "changelog": [
         {
           "version": "1.0.2",
+          "date": "2026-11-22",
+          "notes": [
+            "iPhone: free AdShield setup profile. On the app page on your iPhone, tap Set up on iPhone. Needs iOS 14 or later."
+          ]
+        },
+        {
+          "version": "1.0.2",
           "date": "2026-11-21",
           "notes": [
             "First release: block ads and trackers in every app, live blocked list, allowlist and blocklist updates.",
@@ -396,7 +405,11 @@
         }
       ],
       "reviews": [],
-      "baseDownloads": 0
+      "baseDownloads": 0,
+      "ios": {
+        "profile": "apps/adshield/AdShield-iPhone.mobileconfig",
+        "note": "On iPhone, AdShield is a free settings profile instead of an app. It switches your iPhone to AdGuard's ad-blocking DNS over an encrypted connection, so ads and trackers are blocked in every app and browser, on Wi-Fi and mobile data. There's no app screen or blocked list on iPhone. Needs iOS 14 or later."
+      }
     }
   ]
 }

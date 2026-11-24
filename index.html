@@ -686,7 +686,7 @@ fetch("apps.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()}
   render();paintUpd();
 }).catch(()=>{$("#view").innerHTML=`<div class="card empty"><b>The store couldn't load</b>Check your internet connection and refresh the page.</div>`});
 
-if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});if(window.caches)caches.keys().then(ks=>ks.forEach(k=>caches.delete(k))).catch(()=>{})}
 })();
 </script>
 </body>

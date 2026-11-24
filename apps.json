@@ -431,8 +431,8 @@
       "icon": "apps/spendsense/icon.png",
       "color": "#3D5AFE",
       "apk": "apps/spendsense/SpendSense.apk",
-      "version": "2.0.0",
-      "versionCode": 3,
+      "version": "2.0.1",
+      "versionCode": 4,
       "updated": "2026-11-25",
       "released": "2026-11-24",
       "size": "4.4 MB",
@@ -445,7 +445,7 @@
         "English"
       ],
       "permissions": [
-        "Notifications"
+        "None"
       ],
       "website": "",
       "privacy": "apps/spendsense/privacy.html",
@@ -504,6 +504,13 @@
         }
       ],
       "changelog": [
+        {
+          "version": "2.0.1",
+          "date": "2026-11-25",
+          "notes": [
+            "Fixed: Google Play Protect could stop the install. The app now asks for no permissions at all."
+          ]
+        },
         {
           "version": "2.0.0",
           "date": "2026-11-25",

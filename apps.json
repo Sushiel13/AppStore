@@ -410,6 +410,112 @@
         "profile": "apps/adshield/AdShield-iPhone.mobileconfig",
         "note": "On iPhone, AdShield is a free settings profile instead of an app. It switches your iPhone to AdGuard's ad-blocking DNS over an encrypted connection, so ads and trackers are blocked in every app and browser, on Wi-Fi and mobile data. There's no app screen or blocked list on iPhone. Needs iOS 14 or later."
       }
+    },
+    {
+      "id": "spendsense",
+      "name": "SpendSense",
+      "tagline": "Tracks your spending automatically from bank, UPI and card SMS. No internet, nothing leaves your phone.",
+      "category": "finance",
+      "tags": [
+        "expense tracker",
+        "expenses",
+        "spending",
+        "budget",
+        "money",
+        "sms",
+        "upi",
+        "bank sms",
+        "finance",
+        "money manager"
+      ],
+      "icon": "apps/spendsense/icon.png",
+      "color": "#3D5AFE",
+      "apk": "apps/spendsense/SpendSense.apk",
+      "version": "1.0.0",
+      "versionCode": 1,
+      "updated": "2026-11-24",
+      "released": "2026-11-24",
+      "size": "51 KB",
+      "minAndroid": "7.0",
+      "price": "Free",
+      "ads": false,
+      "inAppPurchases": false,
+      "contentRating": "Everyone",
+      "languages": [
+        "English"
+      ],
+      "permissions": [
+        "Read SMS (to find transaction messages)",
+        "Receive SMS (to add new transactions as they arrive)",
+        "Notifications"
+      ],
+      "website": "",
+      "privacy": "apps/spendsense/privacy.html",
+      "shareText": "SpendSense: free expense tracker that reads your bank and UPI SMS automatically. No internet, no sign-up.",
+      "screenshots": [],
+      "about": "SpendSense builds your expense tracker for you. It reads the transaction SMS your bank, UPI app and credit card already send you, and picks out the amount, who you paid, the account and how you paid. Spends are sorted into categories like Food, Groceries, Shopping, Travel and Bills, so you can see each month where your money went. The app has no internet access, so your messages and expenses stay on your phone.",
+      "features": [
+        {
+          "title": "Automatic tracking",
+          "points": [
+            "Reads the last 6 months of bank SMS on first run",
+            "Adds new spends the moment the SMS arrives",
+            "Works with HDFC, SBI, ICICI, Axis, Kotak, Paytm, IDFC and most other banks"
+          ]
+        },
+        {
+          "title": "Know where it went",
+          "points": [
+            "Monthly Spent and Received totals",
+            "Category breakdown with percentages",
+            "Amount, merchant, bank, account and UPI/card/ATM for every entry"
+          ]
+        },
+        {
+          "title": "Smart, and you stay in control",
+          "points": [
+            "Auto-categorises Swiggy, Amazon, Uber, petrol, bills and more",
+            "Change a merchant's category once and it remembers",
+            "Edit, delete or add cash spends by hand"
+          ]
+        },
+        {
+          "title": "Private by design",
+          "points": [
+            "No internet permission at all",
+            "Skips OTPs, personal chats and payment requests",
+            "Export to CSV whenever you want"
+          ]
+        }
+      ],
+      "dataSafety": [
+        {
+          "icon": "phone",
+          "title": "Everything stays on your phone",
+          "text": "SpendSense has no internet permission. Your SMS and expenses are never sent anywhere."
+        },
+        {
+          "icon": "shield",
+          "title": "Only transaction SMS are kept",
+          "text": "Messages from people, OTPs and reminders are skipped and not stored."
+        },
+        {
+          "icon": "noads",
+          "title": "No ads, no tracking",
+          "text": "The app has no ads and no analytics."
+        }
+      ],
+      "changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-11-24",
+          "notes": [
+            "First release: automatic expense tracking from bank, UPI and card SMS, categories, monthly summary, manual entries and CSV export."
+          ]
+        }
+      ],
+      "reviews": [],
+      "baseDownloads": 0
     }
   ]
 }

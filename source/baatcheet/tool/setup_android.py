@@ -47,7 +47,13 @@ s = sub(
     "release signingConfig",
 )
 s += '\ndependencies {\n    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")\n}\n'
+s = sub(r"compileSdk = [^\n]+", "compileSdk = 36", s, "compileSdk")
 gradle.write_text(s)
+
+settings = root / "android" / "settings.gradle.kts"
+t = settings.read_text()
+t = sub(r'id\("org\.jetbrains\.kotlin\.android"\) version "[^"]*"', 'id("org.jetbrains.kotlin.android") version "2.1.0"', t, "kotlin version")
+settings.write_text(t)
 
 (app / "proguard-rules.pro").write_text(
     "-keep class org.webrtc.** { *; }\n"

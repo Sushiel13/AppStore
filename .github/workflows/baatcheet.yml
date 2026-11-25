@@ -37,7 +37,7 @@ jobs:
 
       - name: Create and patch the Android project
         run: |
-          flutter create --platforms android --org in.appbucket --project-name baatcheet --no-pub .
+          flutter create --platforms android --org com.appbucket --project-name baatcheet --no-pub .
           rm -rf test
           python3 tool/setup_android.py
           python3 tool/gen_firebase_options.py

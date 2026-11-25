@@ -16,7 +16,7 @@ def sub(pattern, repl, text, what):
     return new
 
 
-s = sub(r'applicationId = "[^"]*"', 'applicationId = "in.appbucket.baatcheet"', s, "applicationId")
+s = sub(r'applicationId = "[^"]*"', 'applicationId = "com.appbucket.baatcheet"', s, "applicationId")
 s = sub(r"minSdk = [^\n]+", 'minSdk = 24\n        ndk { abiFilters += listOf("armeabi-v7a", "arm64-v8a") }', s, "minSdk")
 s = sub(r"ndkVersion = [^\n]+", 'ndkVersion = "27.0.12077973"', s, "ndkVersion")
 s = sub(r"compileOptions \{", "compileOptions {\n        isCoreLibraryDesugaringEnabled = true", s, "compileOptions")

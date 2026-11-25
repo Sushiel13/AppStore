@@ -4,7 +4,7 @@ import pathlib
 
 root = pathlib.Path(__file__).resolve().parent.parent
 src = root / "android-config" / "google-services.json"
-pkg = "in.appbucket.baatcheet"
+pkg = "com.appbucket.baatcheet"
 
 placeholder = True
 opts = dict(apiKey="none", appId="1:0:android:0", messagingSenderId="0", projectId="baatcheet-placeholder", storageBucket="")

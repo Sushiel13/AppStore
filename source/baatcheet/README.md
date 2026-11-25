@@ -14,7 +14,7 @@ It runs on Firebase's free **Spark** plan: Firebase Authentication (email + pass
 2. **Build → Authentication → Get started → Email/Password → Enable → Save.**
 3. **Build → Firestore Database → Create database →** location `asia-south1 (Mumbai)` **→ Start in production mode.**
 4. In Firestore, open the **Rules** tab, replace everything with the contents of `firestore.rules`, and **Publish**.
-5. **Project settings (gear) → Your apps → Android icon.** Package name: `in.appbucket.baatcheet`. Register, then **download `google-services.json`**.
+5. **Project settings (gear) → Your apps → Android icon.** Package name: `com.appbucket.baatcheet`. Register, then **download `google-services.json`**.
 6. Put that file at `source/baatcheet/android-config/google-services.json` (replace the placeholder) and push. The next build connects to your project.
 
 ## Signing key

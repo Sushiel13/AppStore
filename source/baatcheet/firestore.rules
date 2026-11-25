@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+    function chatMembers(chatId) {
+      return get(/databases/$(database)/documents/chats/$(chatId)).data.members;
+    }
+
+    // Profiles are visible to signed-in users so friends can find each other by ID.
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && me() == uid;
+
+      // Each side of a friendship writes the other's entry when a request is accepted.
+      match /contacts/{cid} {
+        allow read: if signedIn() && me() == uid;
+        allow write: if signedIn() && (me() == uid || me() == cid);
+      }
+    }
+
+    match /requests/{rid} {
+      allow read: if signedIn() && (resource.data.to == me() || resource.data.from == me());
+      allow create: if signedIn() && request.resource.data.from == me() && rid == me() + '_' + request.resource.data.to;
+      allow update: if signedIn() && resource.data.from == me() && request.resource.data.from == me();
+      allow delete: if signedIn() && (resource.data.to == me() || resource.data.from == me());
+    }
+
+    match /chats/{chatId} {
+      allow read: if signedIn() && me() in resource.data.members;
+      allow create: if signedIn() && me() in request.resource.data.members;
+      allow update: if signedIn() && me() in resource.data.members;
+
+      match /messages/{mid} {
+        allow read: if signedIn() && me() in chatMembers(chatId);
+        allow create: if signedIn() && request.resource.data.sender == me() && me() in chatMembers(chatId);
+        // Only "recall" of your own message is allowed.
+        allow update: if signedIn() && resource.data.sender == me() && request.resource.data.type == 'recalled';
+      }
+    }
+
+    match /moments/{id} {
+      allow read: if signedIn() && me() in resource.data.audience;
+      allow create: if signedIn() && request.resource.data.author == me();
+      // Friends can like and comment; only the author changes anything else.
+      allow update: if signedIn() && me() in resource.data.audience
+        && (resource.data.author == me()
+            || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'comments']));
+      allow delete: if signedIn() && resource.data.author == me();
+    }
+
+    match /calls/{callId} {
+      allow read, update: if signedIn() && (me() == resource.data.caller || me() == resource.data.callee);
+      allow create: if signedIn() && request.resource.data.caller == me();
+      match /{sub}/{doc} {
+        allow read, write: if signedIn();
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+Analyzing jarvis...                                             
+
+   info • 'localeId' is deprecated and shouldn't be used. Use SpeechListenOptions.localeId instead • lib/main.dart:170:7 • deprecated_member_use
+   info • 'listenFor' is deprecated and shouldn't be used. Use SpeechListenOptions.listenFor instead • lib/main.dart:171:7 • deprecated_member_use
+   info • 'pauseFor' is deprecated and shouldn't be used. Use SpeechListenOptions.pauseFor instead • lib/main.dart:172:7 • deprecated_member_use
+
+3 issues found. (ran in 11.0s)

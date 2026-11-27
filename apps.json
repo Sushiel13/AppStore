@@ -296,7 +296,7 @@
     {
       "id": "adshield",
       "name": "AdShield",
-      "tagline": "Block ads and trackers in every app and browser. Android app, plus a free iPhone profile.",
+      "tagline": "Block ads and trackers in every app and browser. 14 days free, then ₹29 a month. Free iPhone profile.",
       "category": "tools",
       "tags": [
         "ad blocker",
@@ -319,9 +319,9 @@
       "released": "2026-11-21",
       "size": "4.4 MB",
       "minAndroid": "7.0",
-      "price": "Free",
+      "price": "Free trial",
       "ads": false,
-      "inAppPurchases": false,
+      "inAppPurchases": true,
       "contentRating": "Everyone",
       "languages": [
         "English"
@@ -335,7 +335,7 @@
       "privacy": "apps/adshield/privacy.html",
       "shareText": "AdShield: free ad and tracker blocker for Android. Works in every app and browser, no server or sign-up.",
       "screenshots": [],
-      "about": "AdShield blocks ads, trackers and analytics across your whole phone, in apps and browsers, on Wi-Fi and mobile data. It uses Android's VPN feature locally, so there's no VPN server and your browsing isn't sent anywhere. Tap the shield once and it keeps working in the background.",
+      "about": "AdShield blocks ads, trackers and analytics across your whole phone, in apps and browsers, on Wi-Fi and mobile data. It uses Android's VPN feature locally, so there's no VPN server and your browsing isn't sent anywhere. Tap the shield once and it keeps working in the background.\n\nTry everything free for 14 days. After that, AdShield Pro keeps the shield on: ₹29 a month or ₹249 a year, paid by UPI. Pay in your UPI app, send the details on WhatsApp, and you get an unlock code for your phone. The iPhone profile stays free.",
       "features": [
         {
           "title": "Blocks ads everywhere",
@@ -368,6 +368,14 @@
             "Only website-name lookups are checked",
             "Barely affects speed or battery"
           ]
+        },
+        {
+          "title": "Simple pricing",
+          "points": [
+            "14-day free trial with everything",
+            "Pro: ₹29 a month or ₹249 a year",
+            "Pay by UPI, no card or sign-up needed"
+          ]
         }
       ],
       "dataSafety": [
@@ -390,6 +398,15 @@
       "changelog": [
         {
           "version": "1.0.3",
+          "date": "2026-11-27",
+          "notes": [
+            "AdShield Pro: everything is free for 14 days from when you update. After that, Pro keeps the shield on for ₹29 a month or ₹249 a year.",
+            "Getting Pro: tap the Pro line under the shield, pick a plan, pay by UPI, send the details on WhatsApp, then paste the unlock code you get back.",
+            "If the trial or Pro ends while the shield is on, AdShield stops and tells you in a notification."
+          ]
+        },
+        {
+          "version": "1.0.2",
           "date": "2026-11-22",
           "notes": [
             "iPhone: free AdShield setup profile. On the app page on your iPhone, tap Set up on iPhone. Needs iOS 14 or later."

@@ -4,7 +4,7 @@
 <title>Pro Codes · AppBucket</title>
 <link rel="icon" href="../store-icon.svg" type="image/svg+xml">
 <style>
-/* Owner-only page: makes House Help Tracker Pro unlock codes with the private key, which never leaves this browser */
+/* Owner-only page: makes Pro unlock codes (House Help Tracker, AdShield) with the private key, which never leaves this browser */
 :root{--bg:#f4f6fb;--surface:#fff;--sunk:#eaeef7;--ink:#101a3a;--muted:#5d6884;--line:#dde3ee;--navy:#13235b;--acc:#e8650a;--ok:#15803d;--err:#b91c1c;color-scheme:light;
  --f:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root{--bg:#0a0f1f;--surface:#131a30;--sunk:#1a2341;--ink:#e8ecf8;--muted:#9ba6c3;--line:#26304e;--ok:#4ade80;--err:#f87171;color-scheme:dark}}
@@ -25,20 +25,21 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;p
 .scroll{overflow-x:auto}
 [hidden]{display:none!important}
 </style></head><body>
-<header class="top"><div class="w"><b>House Help Tracker · Pro codes</b><span>Owner page. Don't share this link or your key file.</span></div></header>
+<header class="top"><div class="w"><b>AppBucket · Pro codes</b><span>Owner page. Don't share this link or your key file.</span></div></header>
 <main class="w">
  <section class="card" id="keyCard">
   <h2>1. Load your private key</h2>
-  <p class="muted">Pick <b>HouseHelpTracker-Pro-private-key.json</b>. It's kept only in this browser on this phone, so you do this once. Keep the file safe in Google Drive too.</p>
+  <p class="muted">Pick <b>HouseHelpTracker-Pro-private-key.json</b>. The same key signs codes for every app. It's kept only in this browser on this phone, so you do this once. Keep the file safe in Google Drive too.</p>
   <input type="file" id="keyFile" accept=".json,application/json">
   <p id="keyMsg" class="muted" role="status"></p>
  </section>
  <section class="card" id="makeCard" hidden>
   <h2>2. Make an unlock code</h2>
   <p class="muted">Check the UPI payment arrived first. Then copy the phone ID from their WhatsApp message.</p>
-  <label>Phone ID<input id="dev" placeholder="HHT-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false"></label>
+  <label>Phone ID<input id="dev" placeholder="HHT-XXXX-XXXX or ADS-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false"></label>
+  <p class="muted" id="appLine">App: House Help Tracker</p>
   <div class="two">
-   <label>Plan<select id="plan"><option value="Y">Yearly · ₹399 (366 days)</option><option value="M">Monthly · ₹49 (31 days)</option></select></label>
+   <label>Plan<select id="plan"></select></label>
    <label>Starts on<input id="start" type="date"></label>
   </div>
   <p class="muted" id="expLine"></p>
@@ -52,7 +53,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;p
  </section>
  <section class="card" id="logCard" hidden>
   <h2>Codes made on this phone</h2>
-  <div class="scroll"><table><thead><tr><th>Made</th><th>Phone ID</th><th>Plan</th><th>Until</th></tr></thead><tbody id="log"></tbody></table></div>
+  <div class="scroll"><table><thead><tr><th>Made</th><th>App</th><th>Phone ID</th><th>Plan</th><th>Until</th></tr></thead><tbody id="log"></tbody></table></div>
   <button class="ghost" id="forget" type="button">Remove the key from this browser</button>
  </section>
 </main>
@@ -61,30 +62,40 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;p
 const $=s=>document.querySelector(s);
 const st={get(k,d){try{const v=localStorage.getItem("hhpro."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("hhpro."+k,JSON.stringify(v))}catch(e){}}};
 const DAYS={M:31,Y:366},NAME={M:"Monthly",Y:"Yearly"};
+// Each app: phone ID prefix, code prefix (also signed, so a code never works in another app), prices, how to enter it
+const APPS={
+ HHT:{name:"House Help Tracker",code:"HHT1",price:{Y:399,M:49},where:"Open the app → Settings → Enter a code, paste it and tap Unlock Pro."},
+ ADS:{name:"AdShield",code:"ADS1",price:{Y:249,M:29},where:"Open AdShield → tap Get Pro (or the Pro line) → paste it and tap Unlock Pro."}};
+const appOf=dev=>APPS[(dev||"").toUpperCase().replace(/\s+/g,"").slice(0,3)]?(dev||"").toUpperCase().replace(/\s+/g,"").slice(0,3):"HHT";
+function fillPlans(){const a=APPS[appOf($("#dev").value)],cur=$("#plan").value||"Y";
+ $("#plan").innerHTML=`<option value="Y">Yearly · ₹${a.price.Y} (366 days)</option><option value="M">Monthly · ₹${a.price.M} (31 days)</option>`;
+ $("#plan").value=cur;$("#appLine").textContent="App: "+a.name;upd()}
 const pad=n=>String(n).padStart(2,"0"),isoD=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 let key=null;
 async function loadKey(j){const k=j&&j.key?j.key:j;if(!k||k.kty!=="EC"||k.crv!=="P-256"||!k.d)throw new Error("not a key");
  key=await crypto.subtle.importKey("jwk",{kty:k.kty,crv:k.crv,x:k.x,y:k.y,d:k.d,ext:true},{name:"ECDSA",namedCurve:"P-256"},false,["sign"]);return k}
-function showReady(){$("#keyMsg").innerHTML='<span class="ok">Key loaded.</span> You can make codes.';$("#makeCard").hidden=false;$("#logCard").hidden=false;drawLog();upd()}
+function showReady(){$("#keyMsg").innerHTML='<span class="ok">Key loaded.</span> You can make codes.';$("#makeCard").hidden=false;$("#logCard").hidden=false;drawLog();fillPlans()}
 $("#keyFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());const k=await loadKey(j);st.set("key",k);showReady()}
  catch(err){$("#keyMsg").innerHTML='<span class="err">That isn\'t the House Help Tracker Pro key file.</span>'}};
 const today=new Date();$("#start").value=isoD(today);
 function expiry(){const s=$("#start").value?new Date($("#start").value+"T00:00"):new Date();const d=new Date(s);d.setDate(d.getDate()+DAYS[$("#plan").value]);return d}
 function upd(){$("#expLine").textContent=`Pro will work until ${expiry().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}.`}
-$("#plan").onchange=upd;$("#start").onchange=upd;
+$("#plan").onchange=upd;$("#start").onchange=upd;$("#dev").oninput=fillPlans;
 $("#make").onclick=async()=>{const err=$("#mkErr");err.hidden=true;
- const dev=$("#dev").value.toUpperCase().replace(/\s+/g,"").replace(/^HHT(?!-)/,"HHT-");
- if(!/^HHT-[A-Z2-9]{4}-[A-Z2-9]{4}$/.test(dev)){err.textContent="The phone ID looks like HHT-7KQ2-M9XA. Check it and try again.";err.hidden=false;return}
+ const raw=$("#dev").value.toUpperCase().replace(/[^A-Z0-9]/g,"");   // dashes and spaces optional
+ const dev=raw.length===11?`${raw.slice(0,3)}-${raw.slice(3,7)}-${raw.slice(7)}`:$("#dev").value.toUpperCase().trim();
+ if(!/^(HHT|ADS)-[A-Z2-9]{4}-[A-Z2-9]{4}$/.test(dev)){err.textContent="The phone ID looks like HHT-7KQ2-M9XA (House Help Tracker) or ADS-7KQ2-M9XA (AdShield). Check it and try again.";err.hidden=false;return}
+ const ak=appOf(dev),a=APPS[ak];
  const plan=$("#plan").value,e=expiry(),ymd=isoD(e).replace(/-/g,"");
- const sig=await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},key,new TextEncoder().encode(`HHT1|${dev}|${plan}|${ymd}`));
- const code=`HHT1${plan}${ymd}-${b64u(sig)}`;$("#dev").value=dev;
+ const sig=await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},key,new TextEncoder().encode(`${a.code}|${dev}|${plan}|${ymd}`));
+ const code=`${a.code}${plan}${ymd}-${b64u(sig)}`;$("#dev").value=dev;
  const until=e.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
- const msg=`Thank you! Your House Help Tracker Pro (${NAME[plan]}) code, valid until ${until}:\n\n${code}\n\nOpen the app → Settings → Enter a code, paste it and tap Unlock Pro.`;
+ const msg=`Thank you! Your ${a.name} Pro (${NAME[plan]}) code, valid until ${until}:\n\n${code}\n\n${a.where}`;
  $("#code").value=code;$("#out").hidden=false;$("#wa").href="https://wa.me/?text="+encodeURIComponent(msg);
  $("#copy").onclick=()=>{try{navigator.clipboard.writeText(msg).then(()=>{$("#copy").textContent="Copied"},()=>{$("#code").select()})}catch(x){$("#code").select()}};
- const log=st.get("log",[]);log.unshift({on:isoD(new Date()),dev,plan,until:isoD(e)});st.set("log",log.slice(0,300));drawLog()};
-function drawLog(){const log=st.get("log",[]);$("#log").innerHTML=log.length?log.map(r=>`<tr><td>${r.on}</td><td>${r.dev}</td><td>${NAME[r.plan]}</td><td>${r.until}</td></tr>`).join(""):'<tr><td colspan="4" class="muted">None yet.</td></tr>'}
+ const log=st.get("log",[]);log.unshift({on:isoD(new Date()),app:ak,dev,plan,until:isoD(e)});st.set("log",log.slice(0,300));drawLog()};
+function drawLog(){const log=st.get("log",[]);$("#log").innerHTML=log.length?log.map(r=>`<tr><td>${r.on}</td><td>${(APPS[r.app||appOf(r.dev)]||APPS.HHT).name}</td><td>${r.dev}</td><td>${NAME[r.plan]}</td><td>${r.until}</td></tr>`).join(""):'<tr><td colspan="5" class="muted">None yet.</td></tr>'}
 $("#forget").onclick=()=>{try{localStorage.removeItem("hhpro.key")}catch(e){}location.reload()};
 (async()=>{const k=st.get("key",null);if(k){try{await loadKey(k);showReady()}catch(e){}}})();
 })();

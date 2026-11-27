@@ -560,6 +560,126 @@
       ],
       "reviews": [],
       "baseDownloads": 0
+    },
+    {
+      "name": "AppBucket",
+      "tagline": "Install and update every AppBucket app in one tap.",
+      "category": "tools",
+      "tags": [
+        "appbucket",
+        "app store",
+        "store",
+        "apps",
+        "updates",
+        "install",
+        "apk"
+      ],
+      "color": "#13235b",
+      "package": "in.appbucket.store",
+      "minAndroid": "7.0",
+      "price": "Free",
+      "ads": false,
+      "inAppPurchases": false,
+      "contentRating": "Everyone",
+      "languages": [
+        "English"
+      ],
+      "permissions": [
+        "Install apps (only the ones you choose)",
+        "See installed apps (to show Open or Update)",
+        "Notifications (update alerts)",
+        "Internet"
+      ],
+      "website": "https://appbucket.in/",
+      "shareText": "AppBucket: install and update simple, private apps for Indian homes in one tap.",
+      "screenshots": [
+        {
+          "src": "apps/appbucket/shots/1-home.png",
+          "caption": "Every AppBucket app in one place"
+        },
+        {
+          "src": "apps/appbucket/shots/2-install.png",
+          "caption": "Install in one tap"
+        },
+        {
+          "src": "apps/appbucket/shots/3-updates.png",
+          "caption": "See and install updates"
+        }
+      ],
+      "about": "AppBucket is the app for appbucket.in. Browse the apps, tap Install, and AppBucket downloads the app and opens Android's installer for you, with no hunting through the Downloads folder. It shows which apps are already on your phone, lets you open them, and tells you when a newer version is out, so updating is one tap too. Every download is checked to make sure it is the app the store lists before it is installed.",
+      "features": [
+        {
+          "title": "Install in one tap",
+          "points": [
+            "Download progress right on the button",
+            "Android's own installer opens when it's ready",
+            "No APK files left in your Downloads folder"
+          ]
+        },
+        {
+          "title": "Updates made easy",
+          "points": [
+            "Update buttons for apps on your phone",
+            "A notification when an update is out",
+            "Updates keep your data"
+          ]
+        },
+        {
+          "title": "Safe downloads",
+          "points": [
+            "Only from appbucket.in over HTTPS",
+            "Each download is checked against the app's package name",
+            "You approve every install"
+          ]
+        },
+        {
+          "title": "Light and private",
+          "points": [
+            "No account, no ads, no tracking",
+            "Small download",
+            "Works on Android 7 and newer"
+          ]
+        }
+      ],
+      "dataSafety": [
+        {
+          "icon": "shield",
+          "title": "No account, no personal data",
+          "text": "AppBucket doesn't ask for your name, number or email and doesn't collect personal data."
+        },
+        {
+          "icon": "phone",
+          "title": "Installed apps stay on your phone",
+          "text": "AppBucket checks which AppBucket apps are installed only on the phone, to show Open or Update. This list is never sent anywhere."
+        },
+        {
+          "icon": "noads",
+          "title": "No ads, no tracking",
+          "text": "The app has no ads and no analytics."
+        }
+      ],
+      "id": "appbucket",
+      "apk": "apps/appbucket/AppBucket.apk",
+      "icon": "apps/appbucket/icon.png",
+      "privacy": "apps/appbucket/privacy.html",
+      "version": "1.0",
+      "versionCode": 1,
+      "updated": "2026-11-27",
+      "released": "2026-11-27",
+      "size": "1.8 MB",
+      "changelog": [
+        {
+          "version": "1.0",
+          "date": "2026-11-27",
+          "notes": [
+            "The appbucket.in store as an Android app: browse, search and install every AppBucket app.",
+            "Install in one tap: the app downloads, checks the file and opens Android's installer for you.",
+            "Open or Update buttons for apps already on your phone, and a notification when an update is out."
+          ]
+        }
+      ],
+      "reviews": [],
+      "baseDownloads": 0
     }
   ]
 }

@@ -1,0 +1,113 @@
+name: Jarvis APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'source/jarvis/**'
+      - '.github/workflows/jarvis.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jarvis
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: source/jarvis
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.3
+          cache: true
+
+      - name: Create and patch the Android project
+        run: |
+          set -o pipefail
+          flutter create --platforms android --org com.appbucket --project-name jarvis --no-pub . 2>&1 | tee "$RUNNER_TEMP/1-create.log"
+          rm -f test/widget_test.dart
+          python3 tool/setup_android.py 2>&1 | tee -a "$RUNNER_TEMP/1-create.log"
+
+      - name: Get packages
+        run: |
+          set -o pipefail
+          flutter pub get 2>&1 | tee "$RUNNER_TEMP/2-pub.log"
+
+      - name: Check the code
+        run: |
+          set -o pipefail
+          flutter analyze --no-fatal-infos --no-fatal-warnings 2>&1 | tee "$RUNNER_TEMP/3-analyze.log"
+
+      - name: Unit tests
+        run: |
+          set -o pipefail
+          flutter test 2>&1 | tee "$RUNNER_TEMP/4-test.log"
+
+      - name: Signing key
+        env:
+          KS: ${{ secrets.JARVIS_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KS" ]; then
+            echo "$KS" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "JV_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          else
+            echo "JV_KEYSTORE=$PWD/android-config/test-signing.jks" >> "$GITHUB_ENV"
+          fi
+          echo "JV_KEYSTORE_PASSWORD=jarvis-store" >> "$GITHUB_ENV"
+          echo "JV_KEY_ALIAS=jarvis" >> "$GITHUB_ENV"
+
+      - name: Build APK
+        run: |
+          set -o pipefail
+          flutter build apk --release --target-platform android-arm,android-arm64 2>&1 | tee "$RUNNER_TEMP/5-build.log"
+          ls -l build/app/outputs/flutter-apk/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Jarvis-apk
+          path: source/jarvis/build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Save the APK to the store
+        working-directory: .
+        run: |
+          mkdir -p apps/jarvis
+          cp source/jarvis/build/app/outputs/flutter-apk/app-release.apk apps/jarvis/Jarvis.apk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/jarvis/Jarvis.apk
+          git commit -m "Jarvis APK build ${{ github.run_number }}" || exit 0
+          git pull --rebase origin main
+          git push
+
+      # The build logs go to the ci-log-jarvis branch so problems can be fixed without opening Actions.
+      - name: Save build logs
+        if: always()
+        working-directory: .
+        run: |
+          mkdir -p /tmp/jvlogs
+          cp "$RUNNER_TEMP"/*.log /tmp/jvlogs/ 2>/dev/null || true
+          echo "${{ job.status }} run ${{ github.run_number }} ${{ github.sha }}" > /tmp/jvlogs/0-status.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan jvlog
+          git rm -rfq --cached . > /dev/null
+          rm -rf ./* .github .gitignore .nojekyll CNAME 2>/dev/null || true
+          cp /tmp/jvlogs/* .
+          git add -A .
+          git commit -qm "Jarvis build log ${{ github.run_number }}"
+          git push -f origin HEAD:ci-log-jarvis

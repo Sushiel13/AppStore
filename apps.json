@@ -451,9 +451,9 @@
       "color": "#3D5AFE",
       "apk": "apps/spendsense/SpendSense.apk",
       "package": "in.appbucket.spendsense",
-      "version": "2.0.1",
-      "versionCode": 4,
-      "updated": "2026-11-25",
+      "version": "2.2.0",
+      "versionCode": 6,
+      "updated": "2026-11-27",
       "released": "2026-11-24",
       "size": "4.4 MB",
       "minAndroid": "7.0",
@@ -524,6 +524,15 @@
         }
       ],
       "changelog": [
+        {
+          "version": "2.2.0",
+          "date": "2026-11-27",
+          "notes": [
+            "Reads many more bank SMS formats: credit card alerts, EMI and auto-debits, IMPS transfers, salary credits and more.",
+            "Messages from co-operative and regional banks that use normal phone numbers are recognised.",
+            "Receipts, balance updates and recharge confirmations are no longer mistaken for transactions."
+          ]
+        },
         {
           "version": "2.0.1",
           "date": "2026-11-25",

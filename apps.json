@@ -680,6 +680,127 @@
       ],
       "reviews": [],
       "baseDownloads": 0
+    },
+    {
+      "id": "jarvis",
+      "name": "Jarvis",
+      "tagline": "Your voice assistant for everyday phone tasks: alarms, reminders, calls, WhatsApp, apps and more.",
+      "category": "productivity",
+      "tags": [
+        "assistant",
+        "voice",
+        "jarvis",
+        "alarm",
+        "reminder",
+        "timer",
+        "torch",
+        "flashlight",
+        "whatsapp",
+        "notes",
+        "shopping list",
+        "weather",
+        "ai"
+      ],
+      "icon": "apps/jarvis/icon.png",
+      "color": "#070B14",
+      "apk": "apps/jarvis/Jarvis.apk",
+      "package": "com.appbucket.jarvis",
+      "version": "1.0.0",
+      "versionCode": 1,
+      "updated": "2026-11-27",
+      "released": "2026-11-27",
+      "size": "32.5 MB",
+      "minAndroid": "7.0",
+      "price": "Free",
+      "ads": false,
+      "inAppPurchases": false,
+      "contentRating": "Everyone",
+      "languages": [
+        "English"
+      ],
+      "permissions": [
+        "Microphone (to hear you)",
+        "Contacts (to call or message people by name)",
+        "Notifications (for reminders)",
+        "Set alarms and timers",
+        "Internet (weather and optional AI)"
+      ],
+      "website": "",
+      "privacy": "apps/jarvis/privacy.html",
+      "shareText": "Jarvis: free voice assistant for Android. Say \"Set an alarm for 6:30\", \"Remind me to call Mom at 5\" or \"Torch on\".",
+      "screenshots": [],
+      "about": "Jarvis is a light, fast voice assistant for the things you do on your phone every day. Tap the orb and speak, or type, and Jarvis does it: sets alarms and timers, reminds you at the right time, calls or WhatsApps people from your contacts, opens apps, turns on the torch, checks the weather and keeps your notes and shopping list.\n\nIt works without an account or a server. Your notes, lists, reminders and chats stay on your phone. If you like, add your own free Google Gemini key (or Groq, OpenRouter, or Ollama on your computer) in Settings and Jarvis will answer general questions too.",
+      "features": [
+        {
+          "title": "Alarms, timers and reminders",
+          "points": [
+            "\"Set an alarm for 6:30 am\", \"Wake me up in 20 minutes\"",
+            "\"Set a timer for 10 minutes\"",
+            "\"Remind me to pay the bill tomorrow at 9\""
+          ]
+        },
+        {
+          "title": "Calls and messages",
+          "points": [
+            "\"Call Mom\" finds the contact and dials",
+            "\"WhatsApp Rahul saying I'm on my way\" fills in the message",
+            "\"SMS Priya that I'll be late\""
+          ]
+        },
+        {
+          "title": "Your phone, hands-free",
+          "points": [
+            "Open any app: \"Open YouTube\"",
+            "Torch on or off, volume up or down, battery level",
+            "Shortcuts to Wi-Fi, Bluetooth, mobile data and more"
+          ]
+        },
+        {
+          "title": "Notes, lists and answers",
+          "points": [
+            "\"Note: car service on Monday\", \"Read my notes\"",
+            "\"Add milk and eggs to my shopping list\"",
+            "Weather, maths (\"18% of 2500\"), directions and web search"
+          ]
+        },
+        {
+          "title": "Private and light",
+          "points": [
+            "No account, no ads, no tracking",
+            "Everything is saved on your phone",
+            "Optional AI answers with your own key"
+          ]
+        }
+      ],
+      "dataSafety": [
+        {
+          "icon": "phone",
+          "title": "Your data stays on your phone",
+          "text": "Notes, lists, reminders and chat history are saved only on the device. Contacts are read on the phone to find who to call and are never uploaded."
+        },
+        {
+          "icon": "noads",
+          "title": "No ads, no tracking",
+          "text": "The app has no ads, no analytics and no account."
+        },
+        {
+          "icon": "info",
+          "title": "What goes online",
+          "text": "City names for weather go to Open-Meteo. Speech may be processed by your phone's speech service. If you turn on smart answers, your questions go to the AI service you choose."
+        }
+      ],
+      "changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-11-27",
+          "notes": [
+            "First release: alarms, timers, reminders, calls, WhatsApp and SMS, opening apps, torch, volume, weather, notes, lists, maths and search, by voice or typing.",
+            "Optional smart answers with your own Gemini key or an OpenAI-compatible server."
+          ]
+        }
+      ],
+      "reviews": [],
+      "baseDownloads": 0
     }
   ]
 }

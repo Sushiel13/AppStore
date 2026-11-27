@@ -52,6 +52,7 @@ class BlockerVpnService : VpnService() {
     private var tun: ParcelFileDescriptor? = null
     private var readerThread: Thread? = null
     private var workers: ExecutorService? = null
+    private var checker: java.util.concurrent.ScheduledExecutorService? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_STOP) {
@@ -65,6 +66,12 @@ class BlockerVpnService : VpnService() {
     }
 
     private fun startVpn() {
+        if (!Pro.isActive(this)) {          // trial over and no Pro: don't start, say why
+            notifyProNeeded()
+            shutdown()
+            stopSelf()
+            return
+        }
         try {
             if (Blocklist.size == 0) Blocklist.load(this)
             val builder = Builder()
@@ -83,6 +90,15 @@ class BlockerVpnService : VpnService() {
             workers = Executors.newFixedThreadPool(8)
             Stats.running = true
             readerThread = Thread({ readLoop(pfd) }, "adshield-tun").also { it.start() }
+            // stop when the trial or Pro runs out while the shield is on (checked every 30 minutes)
+            checker = java.util.concurrent.Executors.newSingleThreadScheduledExecutor().also {
+                it.scheduleWithFixedDelay({
+                    if (!Pro.isActive(this)) {
+                        notifyProNeeded()
+                        stop(this)
+                    }
+                }, 30, 30, java.util.concurrent.TimeUnit.MINUTES)
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to start VPN", e)
             shutdown()
@@ -171,6 +187,26 @@ class BlockerVpnService : VpnService() {
         )
     }
 
+    private fun notifyProNeeded() {
+        val nm = getSystemService(NotificationManager::class.java)
+        if (Build.VERSION.SDK_INT >= 26) {
+            nm.createNotificationChannel(NotificationChannel("adshield_pro", "AdShield Pro", NotificationManager.IMPORTANCE_DEFAULT))
+        }
+        val open = PendingIntent.getActivity(this, 2, Intent(this, ProActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val n = NotificationCompat.Builder(this, "adshield_pro")
+            .setSmallIcon(R.drawable.ic_shield)
+            .setContentTitle("AdShield stopped: free trial ended")
+            .setContentText("Get Pro (₹${Pro.MONTHLY.price}/month or ₹${Pro.YEARLY.price}/year) to keep blocking ads.")
+            .setContentIntent(open)
+            .setAutoCancel(true)
+            .build()
+        try {
+            nm.notify(3, n)
+        } catch (_: SecurityException) {
+        }
+    }
+
     private fun shutdown() {
         Stats.running = false
         readerThread?.interrupt()
@@ -179,6 +215,8 @@ class BlockerVpnService : VpnService() {
         tun = null
         workers?.shutdownNow()
         workers = null
+        checker?.shutdownNow()
+        checker = null
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
     }
 

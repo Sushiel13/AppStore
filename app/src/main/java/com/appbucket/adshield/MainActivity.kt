@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var listSize: TextView
     private lateinit var adapter: ArrayAdapter<String>
     private lateinit var emptyLog: TextView
+    private lateinit var proLine: TextView
 
     private val handler = Handler(Looper.getMainLooper())
     private val refresher = object : Runnable {
@@ -55,6 +56,9 @@ class MainActivity : AppCompatActivity() {
         blocked = findViewById(R.id.statBlocked)
         listSize = findViewById(R.id.statList)
         emptyLog = findViewById(R.id.emptyLog)
+        proLine = findViewById(R.id.proLine)
+        proLine.setOnClickListener { openPro() }
+        Pro.init(this)
 
         adapter = ArrayAdapter(this, R.layout.item_log, R.id.logText, mutableListOf())
         val logList = findViewById<ListView>(R.id.logList)
@@ -89,7 +93,18 @@ class MainActivity : AppCompatActivity() {
         handler.removeCallbacks(refresher)
     }
 
+    private fun openPro() = startActivity(android.content.Intent(this, ProActivity::class.java))
+
     private fun requestStart() {
+        if (!Pro.isActive(this)) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Your free trial has ended")
+                .setMessage("Get AdShield Pro to keep blocking ads and trackers: ₹${Pro.MONTHLY.price} a month or ₹${Pro.YEARLY.price} a year, paid by UPI.")
+                .setPositiveButton("Get Pro") { _, _ -> openPro() }
+                .setNegativeButton("Not now", null)
+                .show()
+            return
+        }
         val intent = VpnService.prepare(this)
         if (intent != null) vpnPermission.launch(intent) else BlockerVpnService.start(this)
     }
@@ -104,6 +119,10 @@ class MainActivity : AppCompatActivity() {
         queries.text = Stats.queries.get().toString()
         blocked.text = Stats.blocked.get().toString()
         listSize.text = "%,d".format(Blocklist.size)
+        val active = Pro.isActive(this)
+        proLine.text = Pro.statusLine(this)
+        proLine.setTextColor(ContextCompat.getColor(this, if (active) R.color.accent else R.color.shield_on))
+        if (!on && !active) status.text = "Not protected — free trial ended"
 
         val items = Stats.recentBlocked()
         adapter.clear()

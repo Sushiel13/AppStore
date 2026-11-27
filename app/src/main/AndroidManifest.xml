@@ -24,6 +24,19 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ProActivity"
+            android:exported="true"
+            android:label="AdShield Pro">
+            <!-- unlock links: adshield://pro?code=ADS1... -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="adshield" android:host="pro" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".BlockerVpnService"
             android:exported="false"

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AdShield Pro"
+            android:textColor="@color/text"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/proStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/muted"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@color/card"
+            android:lineSpacingExtra="4dp"
+            android:padding="14dp"
+            android:text="Pro keeps AdShield blocking ads and trackers in every app and browser, with the full 150,000-domain list, the allowlist and your blocked log."
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+
+        <TextView style="@style/ProStep" android:text="1. Choose a plan" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/planY"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:checkable="true"
+                android:paddingVertical="12dp"
+                android:text="₹249 / year\nSave 28%" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/planM"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:checkable="true"
+                android:paddingVertical="12dp"
+                android:text="₹29 / month\n " />
+        </LinearLayout>
+
+        <TextView style="@style/ProStep" android:text="2. Pay by UPI" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/payUpi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="Pay ₹249 by UPI"
+            app:backgroundTint="@color/accent" />
+
+        <TextView
+            android:id="@+id/upiId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/muted"
+            android:textIsSelectable="true"
+            android:textSize="13sp" />
+
+        <TextView style="@style/ProStep" android:text="3. Send the payment details" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendWa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="Send on WhatsApp"
+            app:backgroundTint="#16A34A" />
+
+        <TextView
+            android:id="@+id/phoneId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/muted"
+            android:textIsSelectable="true"
+            android:textSize="13sp" />
+
+        <TextView style="@style/ProStep" android:text="4. Enter your unlock code" />
+
+        <EditText
+            android:id="@+id/code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card"
+            android:fontFamily="monospace"
+            android:gravity="top"
+            android:hint="Paste the code you got on WhatsApp"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:minLines="3"
+            android:padding="12dp"
+            android:textColor="@color/text"
+            android:textColorHint="@color/muted"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/codeErr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="#F87171"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/unlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingVertical="12dp"
+            android:text="Unlock Pro"
+            app:backgroundTint="@color/shield_on" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:lineSpacingExtra="3dp"
+            android:text="Your code works only on this phone. Renewing? Pay again and you'll get a new code that starts when your current Pro ends."
+            android:textColor="@color/muted"
+            android:textSize="12sp" />
+    </LinearLayout>
+</ScrollView>

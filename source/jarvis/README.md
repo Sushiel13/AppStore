@@ -17,7 +17,7 @@ Pushing changes under `source/jarvis/` runs `.github/workflows/jarvis.yml`, whic
 3. builds the release APK and commits it to `apps/jarvis/Jarvis.apk` for appbucket.in,
 4. saves the build logs to the `ci-log-jarvis` branch.
 
-The APK is signed with `android-config/test-signing.jks` unless a `JARVIS_KEYSTORE_B64` secret is set (password `jarvis-store`, alias `jarvis`). Keep using the same key, or installed copies can't update.
+The APK is signed with the keystore in the `JARVIS_KEYSTORE_B64` repository secret (base64 of the .jks, password `jarvis-store`, alias `jarvis`). Without the secret the build uses a throwaway key and warns. Keep using the same key, or installed copies can't update. The key is never committed, because this repo is public.
 
 ## Files
 

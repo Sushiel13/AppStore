@@ -64,10 +64,12 @@ jobs:
         run: |
           if [ -n "$KS" ]; then
             echo "$KS" | base64 -d > "$RUNNER_TEMP/release.jks"
-            echo "JV_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
           else
-            echo "JV_KEYSTORE=$PWD/android-config/test-signing.jks" >> "$GITHUB_ENV"
+            echo "::warning::JARVIS_KEYSTORE_B64 secret not set - signing with a temporary key, so this APK can't update later builds"
+            keytool -genkeypair -keystore "$RUNNER_TEMP/release.jks" -storepass jarvis-store -keypass jarvis-store \
+              -alias jarvis -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=AppBucket Jarvis, O=AppBucket, C=IN"
           fi
+          echo "JV_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
           echo "JV_KEYSTORE_PASSWORD=jarvis-store" >> "$GITHUB_ENV"
           echo "JV_KEY_ALIAS=jarvis" >> "$GITHUB_ENV"
 

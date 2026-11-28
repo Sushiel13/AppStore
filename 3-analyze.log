@@ -1,0 +1,5 @@
+Analyzing wifi-booster...                                       
+
+warning • The '!' will have no effect because the receiver can't be null • lib/analysis.dart:327:63 • unnecessary_non_null_assertion
+
+1 issue found. (ran in 7.7s)

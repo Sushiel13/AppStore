@@ -810,6 +810,136 @@
       ],
       "reviews": [],
       "baseDownloads": 0
+    },
+    {
+      "id": "photo-video-settings-guide",
+      "name": "Photo & Video Settings Guide",
+      "tagline": "The right camera settings for every scene, with steps for your phone.",
+      "category": "tools",
+      "tags": [
+        "camera",
+        "photo",
+        "video",
+        "settings",
+        "pro mode",
+        "iso",
+        "shutter",
+        "night",
+        "beach",
+        "sunset",
+        "portrait",
+        "cinematic",
+        "samsung",
+        "pixel",
+        "iphone",
+        "photography"
+      ],
+      "icon": "apps/photo-video-settings-guide/icon.png",
+      "color": "#D62976",
+      "apk": "apps/photo-video-settings-guide/PhotoVideoSettingsGuide.apk",
+      "package": "com.sushil.scenecam",
+      "version": "2.2",
+      "versionCode": 10,
+      "updated": "2026-11-28",
+      "released": "2026-11-28",
+      "size": "75 KB",
+      "minAndroid": "10",
+      "price": "Free",
+      "ads": false,
+      "inAppPurchases": false,
+      "contentRating": "Everyone",
+      "languages": [
+        "English"
+      ],
+      "permissions": [],
+      "website": "",
+      "privacy": "apps/photo-video-settings-guide/privacy.html",
+      "shareText": "Photo & Video Settings Guide: free app that tells you the exact camera settings for beach, night, sunset, portrait, cinematic video and more, with steps for your phone.",
+      "screenshots": [
+        {
+          "src": "apps/photo-video-settings-guide/shots/1-home.jpg",
+          "caption": "Pick Photo or Video, then your scene"
+        },
+        {
+          "src": "apps/photo-video-settings-guide/shots/2-settings.jpg",
+          "caption": "Exact settings for the scene"
+        },
+        {
+          "src": "apps/photo-video-settings-guide/shots/3-steps.jpg",
+          "caption": "Step-by-step for your phone"
+        },
+        {
+          "src": "apps/photo-video-settings-guide/shots/4-video.jpg",
+          "caption": "Video settings too"
+        },
+        {
+          "src": "apps/photo-video-settings-guide/shots/5-phones.jpg",
+          "caption": "Samsung, Pixel, Xiaomi, OnePlus, Vivo, iPhone and more"
+        }
+      ],
+      "about": "Not sure which camera settings to use? Pick your phone once, choose Photo or Video, then tap the scene you're shooting: beach, sunset, night city, light trails, mountains, snow, portrait, food, waterfall, cinematic video, vlog and more.\n\nThe app shows the exact settings to use (mode, lens, ISO, shutter speed, exposure, white balance, focus, resolution, frame rate, stabilisation), then numbered steps to set them in your own camera app. It explains why each setting works and adds pro tips. Tap Open Camera to jump straight to your phone's camera.\n\nIt's tiny, works offline and asks for no permissions.",
+      "features": [
+        {
+          "title": "18 scenes, photo and video",
+          "points": [
+            "Daylight, beach, sunset, night city, night on tripod, light trails",
+            "Mountains, snow, road trip, street, portrait, food, waterfall",
+            "Cinematic video, action, indoor events and vlogs"
+          ]
+        },
+        {
+          "title": "Steps for your phone",
+          "points": [
+            "Samsung Galaxy, Google Pixel, Xiaomi / Redmi / POCO",
+            "OnePlus / Oppo / Realme, Vivo / iQOO, other Android and iPhone",
+            "Adjusted for Pro mode, zoom lenses, RAW and frame rates your phone has"
+          ]
+        },
+        {
+          "title": "Learn as you shoot",
+          "points": [
+            "Why these settings work",
+            "Pro tips for each scene",
+            "Open Camera jumps to your camera in photo or video mode"
+          ]
+        },
+        {
+          "title": "Light and private",
+          "points": [
+            "Under 100 KB, works offline",
+            "No permissions, no account, no ads"
+          ]
+        }
+      ],
+      "dataSafety": [
+        {
+          "icon": "phone",
+          "title": "Your data stays on your phone",
+          "text": "Only the phone model you pick is saved, on the device."
+        },
+        {
+          "icon": "noads",
+          "title": "No ads, no tracking",
+          "text": "The app has no ads, no analytics and no account."
+        },
+        {
+          "icon": "info",
+          "title": "No permissions",
+          "text": "It doesn't use the camera, your photos or the internet. Open Camera just opens your phone's camera app."
+        }
+      ],
+      "changelog": [
+        {
+          "version": "2.2",
+          "date": "2026-11-28",
+          "notes": [
+            "New name: Photo & Video Settings Guide (formerly SceneCam).",
+            "First release on AppBucket."
+          ]
+        }
+      ],
+      "reviews": [],
+      "baseDownloads": 0
     }
   ]
 }

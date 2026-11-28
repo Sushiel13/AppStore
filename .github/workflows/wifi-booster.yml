@@ -1,0 +1,115 @@
+name: WiFi Speed Booster APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'source/wifi-booster/**'
+      - '.github/workflows/wifi-booster.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wifi-booster
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: source/wifi-booster
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.3
+          cache: true
+
+      - name: Create and patch the Android project
+        run: |
+          set -o pipefail
+          flutter create --platforms android --org com.appbucket --project-name wifibooster --no-pub . 2>&1 | tee "$RUNNER_TEMP/1-create.log"
+          rm -f test/widget_test.dart
+          python3 tool/setup_android.py 2>&1 | tee -a "$RUNNER_TEMP/1-create.log"
+
+      - name: Get packages
+        run: |
+          set -o pipefail
+          flutter pub get 2>&1 | tee "$RUNNER_TEMP/2-pub.log"
+
+      - name: Check the code
+        run: |
+          set -o pipefail
+          flutter analyze --no-fatal-infos --no-fatal-warnings 2>&1 | tee "$RUNNER_TEMP/3-analyze.log"
+
+      - name: Unit tests
+        run: |
+          set -o pipefail
+          flutter test 2>&1 | tee "$RUNNER_TEMP/4-test.log"
+
+      - name: Signing key
+        env:
+          KS: ${{ secrets.WIFIBOOSTER_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KS" ]; then
+            echo "$KS" | base64 -d > "$RUNNER_TEMP/release.jks"
+          else
+            echo "::warning::WIFIBOOSTER_KEYSTORE_B64 secret not set - signing with a temporary key, so this APK can't update later builds"
+            keytool -genkeypair -keystore "$RUNNER_TEMP/release.jks" -storepass wifibooster-store -keypass wifibooster-store \
+              -alias wifibooster -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=AppBucket WiFi Booster, O=AppBucket, C=IN"
+          fi
+          echo "WB_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          echo "WB_KEYSTORE_PASSWORD=wifibooster-store" >> "$GITHUB_ENV"
+          echo "WB_KEY_ALIAS=wifibooster" >> "$GITHUB_ENV"
+
+      - name: Build APK
+        run: |
+          set -o pipefail
+          flutter build apk --release --target-platform android-arm,android-arm64 2>&1 | tee "$RUNNER_TEMP/5-build.log"
+          ls -l build/app/outputs/flutter-apk/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WiFiSpeedBooster-apk
+          path: source/wifi-booster/build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Save the APK to the store
+        working-directory: .
+        run: |
+          mkdir -p apps/wifi-speed-booster
+          cp source/wifi-booster/build/app/outputs/flutter-apk/app-release.apk apps/wifi-speed-booster/WiFiSpeedBooster.apk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/wifi-speed-booster/WiFiSpeedBooster.apk
+          git commit -m "WiFi Speed Booster APK build ${{ github.run_number }}" || exit 0
+          git pull --rebase origin main
+          git push
+
+      # The build logs go to the ci-log-wifi-booster branch so problems can be fixed without opening Actions.
+      - name: Save build logs
+        if: always()
+        working-directory: .
+        run: |
+          mkdir -p /tmp/wblogs
+          cp "$RUNNER_TEMP"/*.log /tmp/wblogs/ 2>/dev/null || true
+          echo "${{ job.status }} run ${{ github.run_number }} ${{ github.sha }}" > /tmp/wblogs/0-status.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan wblog
+          git rm -rfq --cached . > /dev/null
+          rm -rf ./* .github .gitignore .nojekyll CNAME 2>/dev/null || true
+          cp /tmp/wblogs/* .
+          git add -A .
+          git commit -qm "WiFi Speed Booster build log ${{ github.run_number }}"
+          git push -f origin HEAD:ci-log-wifi-booster

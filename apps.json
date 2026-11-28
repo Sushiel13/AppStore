@@ -940,6 +940,121 @@
       ],
       "reviews": [],
       "baseDownloads": 0
+    },
+    {
+      "id": "wifi-speed-booster",
+      "name": "WiFi Speed Booster",
+      "tagline": "Find what's slowing your Wi-Fi and fix it: real speed test, signal finder and best channel.",
+      "category": "tools",
+      "tags": [
+        "wifi",
+        "speed test",
+        "booster",
+        "internet",
+        "router",
+        "signal",
+        "channel",
+        "5 ghz",
+        "network",
+        "analyzer",
+        "slow internet"
+      ],
+      "icon": "apps/wifi-speed-booster/icon.png",
+      "color": "#070F24",
+      "apk": "apps/wifi-speed-booster/WiFiSpeedBooster.apk",
+      "package": "com.appbucket.wifibooster",
+      "version": "1.0.0",
+      "versionCode": 1,
+      "updated": "2026-11-28",
+      "released": "2026-11-28",
+      "size": "About 20 MB",
+      "minAndroid": "7.0",
+      "price": "Free",
+      "ads": false,
+      "inAppPurchases": false,
+      "contentRating": "Everyone",
+      "languages": [
+        "English"
+      ],
+      "permissions": [
+        "Location (Android needs it to show Wi-Fi names and nearby networks; your location is not used)",
+        "Wi-Fi and network state",
+        "Internet (speed test)"
+      ],
+      "website": "",
+      "privacy": "apps/wifi-speed-booster/privacy.html",
+      "shareText": "WiFi Speed Booster: free app that finds what's slowing your Wi-Fi and tells you exactly how to fix it.",
+      "screenshots": [],
+      "about": "Slow Wi-Fi? Tap Boost. WiFi Speed Booster checks your signal strength, whether you're on the slower 2.4 GHz band, how crowded your channel is with neighbours' Wi-Fi, the delay to your router and your real internet speed. Then it gives you a Wi-Fi score and a short boost plan, best fix first: move to 5 GHz, change your router to the quietest channel, find a better spot, or call your provider when the problem is the internet line and not the Wi-Fi.\n\nIt's honest: no app can make Wi-Fi radios faster by themselves, and fake \"boost\" buttons don't do anything. This app finds the real cause and shows you how to fix it.\n\nNo account, no ads, no tracking.",
+      "features": [
+        {
+          "title": "One-tap Boost check",
+          "points": [
+            "Wi-Fi score out of 100",
+            "A boost plan with the biggest fixes first",
+            "Buttons that open the right setting or your router page"
+          ]
+        },
+        {
+          "title": "Real speed test",
+          "points": [
+            "Download, upload, ping and jitter",
+            "Compare with the plan you pay for",
+            "History of your past tests"
+          ]
+        },
+        {
+          "title": "Signal finder",
+          "points": [
+            "Live signal in % and dBm",
+            "Walk around to find the best spot",
+            "Band, channel, link speed and Wi-Fi type"
+          ]
+        },
+        {
+          "title": "Nearby networks and best channel",
+          "points": [
+            "See every Wi-Fi around you",
+            "Channel crowding chart for 2.4 GHz",
+            "The quietest channel to set on your router"
+          ]
+        },
+        {
+          "title": "Tells you who to blame",
+          "points": [
+            "Router delay vs internet delay",
+            "Know if it's your Wi-Fi or your internet provider"
+          ]
+        }
+      ],
+      "dataSafety": [
+        {
+          "icon": "phone",
+          "title": "Your data stays on your phone",
+          "text": "Speed test history and your plan speed are saved only on the device. Wi-Fi details are checked on the phone and never uploaded."
+        },
+        {
+          "icon": "noads",
+          "title": "No ads, no tracking",
+          "text": "The app has no ads, no analytics and no account."
+        },
+        {
+          "icon": "info",
+          "title": "What goes online",
+          "text": "The speed test downloads and uploads test data with Cloudflare's speed test service. Location permission is only used to read Wi-Fi names, as Android requires."
+        }
+      ],
+      "changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-11-28",
+          "notes": [
+            "First release: Boost check with Wi-Fi score and fixes, speed test with history, live signal finder, nearby networks and best channel."
+          ]
+        }
+      ],
+      "reviews": [],
+      "baseDownloads": 0
     }
   ]
 }
